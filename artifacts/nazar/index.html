@@ -264,49 +264,44 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin: 8px 0 24px;
+      margin: 16px 0 28px;
     }
     .breathing-ring {
-      width: 64px; height: 64px;
+      width: 120px; height: 120px;
       border-radius: 50%;
-      border: 1.5px solid rgba(28,26,23,0.2);
+      border: 1px solid rgba(28,26,23,0.15);
       animation: breathe 5s ease-in-out infinite;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+    .breathing-ring::before {
+      content: '';
+      position: absolute;
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 1px solid rgba(28,26,23,0.1);
+      animation: breathe 5s ease-in-out infinite;
+      animation-delay: 0.3s;
     }
     .breathing-ring::after {
       content: '';
-      width: 32px; height: 32px;
+      width: 44px; height: 44px;
       border-radius: 50%;
       border: 1px solid rgba(28,26,23,0.12);
       animation: breathe 5s ease-in-out infinite reverse;
     }
 
-    .prompt-wrap {
-      text-align: center;
-      margin-bottom: 8px;
-    }
-    .prompt-text {
+    .ambient-line {
       font-family: 'Lora', serif;
-      font-size: 16px;
+      font-size: 14px;
       font-style: italic;
-      color: var(--ink);
-      line-height: 1.65;
-      margin-bottom: 10px;
-    }
-    #new-prompt-btn {
-      background: none;
-      border: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: 11px;
       color: var(--ink3);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      padding: 4px 0;
-      transition: color 0.2s;
+      text-align: center;
+      line-height: 1.6;
+      transition: opacity 1.2s ease;
+      min-height: 22px;
     }
-    #new-prompt-btn:hover { color: var(--ink2); }
 
     .sense-grid {
       display: grid;
@@ -800,10 +795,7 @@
       <div class="whisper" id="whisper" style="display:none"></div>
       <div class="breathing-wrap">
         <div class="breathing-ring"></div>
-        <div class="prompt-wrap">
-          <p class="prompt-text" id="prompt-text"></p>
-          <button id="new-prompt-btn">new prompt</button>
-        </div>
+        <p class="ambient-line" id="ambient-line"></p>
       </div>
       <div class="sense-grid" id="sense-grid"></div>
       <textarea class="notice-textarea" id="notice-textarea" placeholder="let it come slowly…" rows="5"></textarea>
@@ -936,29 +928,30 @@
     { id: 'feeling', label: 'feeling', color: '#1D9E75' },
   ];
 
-  const PROMPTS = [
-    "What did the world offer you today that you almost didn't take?",
-    "What were you carrying in your body that your mind hadn't named yet?",
-    "Where did time slow down without asking permission?",
-    "What small thing held more beauty than it had any right to?",
-    "What did you almost walk past without looking?",
-    "What did the light do today that it won't do again?",
-    "What sound asked you to stop, even for a moment?",
-    "Where did you feel the day in your skin before you felt it in your thoughts?",
-    "What did you notice that you weren't supposed to notice?",
-    "What reminded you that you are still, somehow, alive to all of this?",
-    "What did your body understand before your mind caught up?",
-    "Where did something ordinary briefly become something else?",
-    "What will you forget by tonight that deserved to be remembered?",
-    "What did the world smell like when you finally stopped moving?",
-    "What felt like a quiet beginning, even if nothing was beginning at all?",
+  const AMBIENT = [
+    "everything that exists wants to be seen.",
+    "the world is generous with beauty.",
+    "to notice is to love.",
+    "you are here.",
+    "slow down. there is more.",
+    "beauty is ordinary. that's why we miss it.",
+    "presence is a gift you give yourself.",
+    "there is so much that has been waiting.",
+    "the ordinary world is extraordinary.",
+    "this moment will not come again.",
+    "attention is the rarest form of care.",
+    "you are already where you need to be.",
+    "the world is always offering something.",
+    "to look closely is a kind of prayer.",
+    "stillness makes room for wonder.",
   ];
 
   // ── STATE ─────────────────────────────────────────────────────────────
   let entries = JSON.parse(localStorage.getItem('nazar_entries') || '[]');
   let currentScreen = 'home';
   let selectedSense = null;
-  let promptIndex = Math.floor(Math.random() * PROMPTS.length);
+  let ambientIndex = Math.floor(Math.random() * AMBIENT.length);
+  let ambientTimer = null;
   let soundOn = false;
   let archiveTab = 'all';
   let yearShown = new Set(JSON.parse(localStorage.getItem('nazar_year_shown') || '[]'));
@@ -1081,7 +1074,8 @@
     const now = new Date();
     dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-    renderPrompt();
+    renderAmbientLine();
+    cycleAmbient();
     renderSenseGrid();
     renderWhisper();
 
@@ -1092,8 +1086,28 @@
     document.querySelectorAll('.sense-btn').forEach(b => b.classList.remove('selected'));
   }
 
-  function renderPrompt() {
-    document.getElementById('prompt-text').textContent = PROMPTS[promptIndex];
+  function renderAmbientLine() {
+    const el = document.getElementById('ambient-line');
+    if (!el) return;
+    el.style.opacity = '0';
+    setTimeout(() => {
+      el.textContent = AMBIENT[ambientIndex];
+      el.style.opacity = '1';
+    }, 600);
+  }
+
+  function cycleAmbient() {
+    if (ambientTimer) clearInterval(ambientTimer);
+    ambientTimer = setInterval(() => {
+      const el = document.getElementById('ambient-line');
+      if (!el) return;
+      el.style.opacity = '0';
+      setTimeout(() => {
+        ambientIndex = (ambientIndex + 1) % AMBIENT.length;
+        el.textContent = AMBIENT[ambientIndex];
+        el.style.opacity = '1';
+      }, 1200);
+    }, 9000);
   }
 
   function renderWhisper() {
@@ -1420,10 +1434,6 @@ ${rows}
   document.getElementById('begin-btn').addEventListener('click', () => goTo('notice'));
   document.getElementById('topbar-logo').addEventListener('click', () => goTo('home'));
   document.getElementById('sound-toggle').addEventListener('click', toggleSound);
-  document.getElementById('new-prompt-btn').addEventListener('click', () => {
-    promptIndex = (promptIndex + 1) % PROMPTS.length;
-    renderPrompt();
-  });
   document.getElementById('save-btn').addEventListener('click', saveEntry);
 
   document.querySelectorAll('.nav-btn').forEach(btn => {
