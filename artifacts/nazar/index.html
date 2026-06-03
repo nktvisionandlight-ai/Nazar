@@ -621,6 +621,133 @@
 
     /* scrollbar */
     .screen::-webkit-scrollbar { width: 0; }
+
+    /* ── JOURNAL HEADER ROW ── */
+    .journal-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0 20px;
+    }
+    .journal-header-row .journal-header { padding: 0; }
+    #export-btn {
+      background: none;
+      border: 1px solid rgba(28,26,23,0.15);
+      border-radius: 999px;
+      padding: 5px 13px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--ink3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #export-btn:hover { color: var(--ink2); border-color: rgba(28,26,23,0.3); }
+    #export-btn svg { width: 12px; height: 12px; }
+
+    /* ── EXPORT OVERLAY ── */
+    #export-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(28,26,23,0.6);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s;
+    }
+    #export-overlay.visible { opacity: 1; pointer-events: all; }
+    .export-sheet {
+      background: var(--cream);
+      border-radius: 20px 20px 0 0;
+      padding: 28px 28px 40px;
+      width: 100%;
+      max-width: 480px;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.32,0.72,0,1);
+    }
+    #export-overlay.visible .export-sheet { transform: translateY(0); }
+    .export-sheet-title {
+      font-family: 'Lora', serif;
+      font-size: 17px;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .export-sheet-sub {
+      font-size: 12px;
+      color: var(--ink3);
+      letter-spacing: 0.03em;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .export-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .export-option {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(28,26,23,0.04);
+      border: 1.5px solid transparent;
+      border-radius: 14px;
+      padding: 16px 18px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      text-align: left;
+      width: 100%;
+    }
+    .export-option:hover { border-color: rgba(28,26,23,0.15); background: rgba(28,26,23,0.06); }
+    .export-option-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .export-option-icon svg { width: 18px; height: 18px; }
+    .export-option-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .export-option-desc {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.03em;
+    }
+    .export-cancel {
+      width: 100%;
+      background: none;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      color: var(--ink3);
+      cursor: pointer;
+      padding: 10px 0;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: #F7F4EF;
+        color: #1C1A17;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 300;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
   </style>
 </head>
 <body>
@@ -686,7 +813,15 @@
 
     <!-- JOURNAL -->
     <div class="screen" id="screen-journal">
-      <div class="journal-header">your noticing</div>
+      <div class="journal-header-row">
+        <div class="journal-header">your noticing</div>
+        <button id="export-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 3v12m0 0l-4-4m4 4l4-4M4 20h16"/>
+          </svg>
+          export
+        </button>
+      </div>
       <div id="journal-list"></div>
     </div>
 
@@ -742,6 +877,45 @@
     <p class="year-stat" id="year-sense"></p>
     <p class="year-memory" id="year-memory"></p>
     <button class="year-close" id="year-close">let it settle</button>
+  </div>
+</div>
+
+<!-- EXPORT OVERLAY -->
+<div id="export-overlay">
+  <div class="export-sheet">
+    <p class="export-sheet-title">carry it with you</p>
+    <p class="export-sheet-sub">Export your journal to keep a copy or share it quietly.</p>
+    <div class="export-options">
+      <button class="export-option" id="export-pdf-btn">
+        <div class="export-option-icon" style="background:rgba(8,80,65,0.1);color:#085041">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14,2 14,8 20,8"/>
+            <line x1="9" y1="13" x2="15" y2="13"/>
+            <line x1="9" y1="17" x2="13" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <div class="export-option-label">Save as PDF</div>
+          <div class="export-option-desc">Opens a print-ready page — save to PDF from your browser</div>
+        </div>
+      </button>
+      <button class="export-option" id="export-txt-btn">
+        <div class="export-option-icon" style="background:rgba(83,74,183,0.1);color:#534AB7">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14,2 14,8 20,8"/>
+            <line x1="9" y1="13" x2="15" y2="13"/>
+            <line x1="9" y1="17" x2="11" y2="17"/>
+          </svg>
+        </div>
+        <div>
+          <div class="export-option-label">Download as text</div>
+          <div class="export-option-desc">A plain .txt file — every entry, quietly arranged</div>
+        </div>
+      </button>
+    </div>
+    <button class="export-cancel" id="export-cancel-btn">not now</button>
   </div>
 </div>
 
@@ -1114,6 +1288,124 @@
     overlay.classList.add('visible');
   }
 
+  // ── EXPORT ────────────────────────────────────────────────────────────
+  function showExportOverlay() {
+    if (entries.length === 0) return;
+    document.getElementById('export-overlay').classList.add('visible');
+  }
+  function hideExportOverlay() {
+    document.getElementById('export-overlay').classList.remove('visible');
+  }
+
+  function exportTxt() {
+    const lines = ['nazar — a journal of noticing', ''];
+    const byDate = [...entries].reverse();
+    byDate.forEach(entry => {
+      const d = new Date(entry.date);
+      const dateStr = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      lines.push(`${dateStr}  [${entry.sense}]`);
+      lines.push(entry.text);
+      lines.push('');
+    });
+    lines.push(`— ${entries.length} observation${entries.length !== 1 ? 's' : ''} —`);
+    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'nazar-journal.txt';
+    a.click();
+    URL.revokeObjectURL(url);
+    hideExportOverlay();
+  }
+
+  function exportPdf() {
+    const byDate = [...entries].reverse();
+    const rows = byDate.map(entry => {
+      const sense = SENSES.find(s => s.id === entry.sense);
+      const d = new Date(entry.date);
+      const dateStr = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      return `
+        <div class="entry">
+          <div class="entry-meta">
+            <span class="tag" style="background:${sense ? sense.color : '#aaa'}">${entry.sense}</span>
+            <span class="date">${dateStr}</span>
+          </div>
+          <div class="entry-body">${entry.text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        </div>`;
+    }).join('');
+
+    const counts = {};
+    entries.forEach(e => { counts[e.sense] = (counts[e.sense] || 0) + 1; });
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+    const stripSegs = byDate.map(e => {
+      const sense = SENSES.find(s => s.id === e.sense);
+      return `<div style="flex:1;background:${sense ? sense.color : '#ccc'}"></div>`;
+    }).join('');
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>nazar — my journal</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #F7F4EF;
+    color: #1C1A17;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 300;
+    padding: 60px 72px;
+    max-width: 720px;
+    margin: 0 auto;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .cover { text-align: center; padding: 80px 0 60px; }
+  .cover-title { font-family: 'Lora', serif; font-size: 36px; color: #1C1A17; margin-bottom: 10px; }
+  .cover-sub { font-size: 13px; color: #B0A89E; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 40px; }
+  .strip { height: 8px; border-radius: 4px; display: flex; overflow: hidden; margin: 0 auto 40px; max-width: 360px; }
+  .cover-stat { font-size: 12px; color: #6B6560; margin: 6px 0; letter-spacing: 0.04em; }
+  .divider { border: none; border-top: 1px solid rgba(28,26,23,0.1); margin: 40px 0; }
+  .entry { padding: 24px 0; border-bottom: 1px solid rgba(28,26,23,0.07); break-inside: avoid; }
+  .entry-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .tag {
+    font-size: 9px; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 999px; color: #F7F4EF;
+  }
+  .date { font-size: 11px; color: #B0A89E; letter-spacing: 0.04em; }
+  .entry-body { font-family: 'Lora', serif; font-size: 16px; line-height: 1.7; color: #1C1A17; }
+  .footer { text-align: center; margin-top: 60px; font-family: 'Lora', serif; font-style: italic; font-size: 13px; color: #B0A89E; }
+  @media print {
+    body { padding: 40px 60px; }
+    .cover { page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+<div class="cover">
+  <div class="cover-title">nazar</div>
+  <div class="cover-sub">a journal of noticing</div>
+  <div class="strip">${stripSegs}</div>
+  <div class="cover-stat">${entries.length} observation${entries.length !== 1 ? 's' : ''}</div>
+  ${top ? `<div class="cover-stat">most felt through: ${top[0]}</div>` : ''}
+  <div class="cover-stat">exported ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</div>
+</div>
+<hr class="divider">
+${rows}
+<div class="footer">every small thing you noticed was worth noticing.</div>
+<script>window.onload = () => window.print();<\/script>
+</body>
+</html>`;
+
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.write(html);
+      win.document.close();
+    }
+    hideExportOverlay();
+  }
+
   // ── UTILITIES ─────────────────────────────────────────────────────────
   function escHtml(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -1149,6 +1441,14 @@
 
   document.getElementById('year-close').addEventListener('click', () => {
     document.getElementById('year-overlay').classList.remove('visible');
+  });
+
+  document.getElementById('export-btn').addEventListener('click', showExportOverlay);
+  document.getElementById('export-pdf-btn').addEventListener('click', exportPdf);
+  document.getElementById('export-txt-btn').addEventListener('click', exportTxt);
+  document.getElementById('export-cancel-btn').addEventListener('click', hideExportOverlay);
+  document.getElementById('export-overlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('export-overlay')) hideExportOverlay();
   });
 
   updateSoundUI();
