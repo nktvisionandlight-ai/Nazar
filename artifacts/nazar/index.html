@@ -964,13 +964,7 @@
   let lfoGain = null;
   const DRONE_FREQS = [110, 165, 220, 330];
 
-  function initAudio() {
-    if (audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    masterGain = audioCtx.createGain();
-    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-    masterGain.connect(audioCtx.destination);
-
+  function createAudioGraph() {
     lfo = audioCtx.createOscillator();
     lfo.type = 'sine';
     lfo.frequency.value = 0.07;
@@ -994,14 +988,30 @@
   }
 
   async function toggleSound() {
-    if (!audioCtx) initAudio();
-    await audioCtx.resume();
     soundOn = !soundOn;
-    const now = audioCtx.currentTime;
-    const targetVol = soundOn ? getTargetVol() : 0;
-    masterGain.gain.cancelScheduledValues(now);
-    masterGain.gain.setValueAtTime(masterGain.gain.value, now);
-    masterGain.gain.linearRampToValueAtTime(targetVol, now + 3);
+
+    if (soundOn) {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        masterGain = audioCtx.createGain();
+        masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+        masterGain.connect(audioCtx.destination);
+      }
+      await audioCtx.resume();
+      if (drones.length === 0) createAudioGraph();
+      const now = audioCtx.currentTime;
+      masterGain.gain.cancelScheduledValues(now);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+      masterGain.gain.linearRampToValueAtTime(getTargetVol(), now + 3);
+    } else {
+      if (audioCtx && masterGain) {
+        const now = audioCtx.currentTime;
+        masterGain.gain.cancelScheduledValues(now);
+        masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+        masterGain.gain.linearRampToValueAtTime(0, now + 3);
+      }
+    }
+
     updateSoundUI();
   }
 
