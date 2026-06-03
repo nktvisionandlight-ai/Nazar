@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>Nazar</title>
+  <meta name="description" content="A meditative daily noticing journal." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F7F4EF;
+      --ink: #1C1A17;
+      --ink2: #6B6560;
+      --ink3: #B0A89E;
+      --sight: #085041;
+      --smell: #BA7517;
+      --sound: #534AB7;
+      --touch: #D85A30;
+      --taste: #D4537E;
+      --feeling: #1D9E75;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 300;
+      overflow: hidden;
+    }
+
+    #app {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      max-width: 480px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* ── TOP BAR ── */
+    #topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px 12px;
+      flex-shrink: 0;
+    }
+
+    #topbar-logo {
+      font-family: 'Lora', serif;
+      font-size: 18px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #sound-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: transparent;
+      border: 1.5px solid var(--ink3);
+      border-radius: 999px;
+      padding: 5px 14px 5px 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--ink2);
+      cursor: pointer;
+      transition: border-color 0.3s, color 0.3s;
+      letter-spacing: 0.04em;
+    }
+    #sound-toggle.active { border-color: var(--ink); color: var(--ink); }
+    #sound-toggle svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── SCREEN CONTAINER ── */
+    #screens {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto;
+      padding: 0 24px 16px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+      -webkit-overflow-scrolling: touch;
+    }
+    .screen.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── BOTTOM NAV ── */
+    #bottom-nav {
+      display: flex;
+      border-top: 1px solid rgba(28,26,23,0.08);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      padding: 14px 0 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      color: var(--ink3);
+      font-family: 'Nunito', sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-btn.active { color: var(--ink); }
+    .nav-btn svg { width: 18px; height: 18px; }
+
+    /* home is not in bottom nav, so hide nav on home */
+    #app.screen-home #bottom-nav { opacity: 0; pointer-events: none; }
+    #app.screen-home #topbar #sound-toggle { display: flex; }
+    #bottom-nav { transition: opacity 0.8s ease; }
+
+    /* ── HOME SCREEN ── */
+    #screen-home {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+      padding-top: 0;
+      text-align: center;
+      gap: 0;
+    }
+
+    .home-eye-wrap {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      margin-bottom: 36px;
+    }
+    .home-eye-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid rgba(28,26,23,0.15);
+      animation: breathe 5s ease-in-out infinite;
+    }
+    .home-eye-ring:nth-child(2) {
+      inset: 8px;
+      border-color: rgba(28,26,23,0.1);
+      animation-delay: 0.4s;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.12); opacity: 1; }
+    }
+
+    .eye-svg {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 48px; height: 48px;
+    }
+
+    .home-title {
+      font-family: 'Lora', serif;
+      font-size: 15px;
+      color: var(--ink2);
+      font-style: italic;
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+      max-width: 260px;
+      margin-bottom: 32px;
+    }
+
+    .home-defn {
+      background: rgba(28,26,23,0.04);
+      border-radius: 12px;
+      padding: 18px 22px;
+      max-width: 320px;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .defn-word {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .defn-pronounce {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+    .defn-body {
+      font-size: 13px;
+      color: var(--ink2);
+      line-height: 1.65;
+    }
+    .defn-body em { font-family: 'Lora', serif; font-style: italic; }
+
+    #begin-btn {
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      border-radius: 999px;
+      padding: 14px 48px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    #begin-btn:hover { opacity: 0.85; }
+
+    /* ── NOTICE SCREEN ── */
+    .notice-date {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      padding-top: 8px;
+    }
+
+    .whisper {
+      font-family: 'Lora', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--ink3);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      padding: 14px 18px;
+      border-left: 2px solid rgba(28,26,23,0.1);
+    }
+    .whisper strong {
+      display: block;
+      font-size: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin-bottom: 6px;
+    }
+
+    .breathing-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 8px 0 24px;
+    }
+    .breathing-ring {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(28,26,23,0.2);
+      animation: breathe 5s ease-in-out infinite;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+    }
+    .breathing-ring::after {
+      content: '';
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(28,26,23,0.12);
+      animation: breathe 5s ease-in-out infinite reverse;
+    }
+
+    .prompt-wrap {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .prompt-text {
+      font-family: 'Lora', serif;
+      font-size: 16px;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.65;
+      margin-bottom: 10px;
+    }
+    #new-prompt-btn {
+      background: none;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 4px 0;
+      transition: color 0.2s;
+    }
+    #new-prompt-btn:hover { color: var(--ink2); }
+
+    .sense-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 24px 0;
+    }
+    .sense-btn {
+      border: 1.5px solid rgba(28,26,23,0.1);
+      border-radius: 10px;
+      background: transparent;
+      padding: 10px 6px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ink2);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .sense-btn .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+    .sense-btn.selected {
+      border-width: 1.5px;
+      color: var(--cream);
+    }
+    .sense-btn.selected .dot { transform: scale(1.4); }
+
+    .notice-textarea {
+      width: 100%;
+      min-height: 140px;
+      background: rgba(28,26,23,0.03);
+      border: 1px solid rgba(28,26,23,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'Lora', serif;
+      font-size: 15px;
+      color: var(--ink);
+      resize: none;
+      outline: none;
+      line-height: 1.7;
+      transition: border-color 0.2s;
+    }
+    .notice-textarea::placeholder { color: var(--ink3); font-style: italic; }
+    .notice-textarea:focus { border-color: rgba(28,26,23,0.25); }
+
+    #save-btn {
+      width: 100%;
+      margin-top: 16px;
+      background: var(--ink);
+      color: var(--cream);
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: opacity 0.3s;
+      margin-bottom: 8px;
+    }
+    #save-btn:hover { opacity: 0.85; }
+    #save-btn:disabled { opacity: 0.35; cursor: default; }
+
+    .save-confirm {
+      text-align: center;
+      font-family: 'Lora', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--ink3);
+      padding: 8px 0 4px;
+      min-height: 28px;
+      transition: opacity 0.5s;
+    }
+
+    /* ── JOURNAL SCREEN ── */
+    .journal-header {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 0 20px;
+    }
+
+    .journal-empty {
+      text-align: center;
+      padding: 60px 0;
+      font-family: 'Lora', serif;
+      font-style: italic;
+      color: var(--ink3);
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .journal-entry {
+      border-bottom: 1px solid rgba(28,26,23,0.07);
+      padding: 18px 0;
+      position: relative;
+    }
+    .journal-entry-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .sense-tag {
+      font-size: 10px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: var(--cream);
+      font-weight: 400;
+    }
+    .entry-date {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.05em;
+    }
+    .entry-text {
+      font-family: 'Lora', serif;
+      font-size: 15px;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+    .remove-btn {
+      position: absolute;
+      top: 18px; right: 0;
+      background: none;
+      border: none;
+      color: var(--ink3);
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.2s;
+      font-family: 'Nunito', sans-serif;
+    }
+    .journal-entry:hover .remove-btn { opacity: 1; }
+
+    /* ── ARCHIVE SCREEN ── */
+    .archive-header {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 0 20px;
+    }
+
+    .color-strip {
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .color-strip-seg {
+      flex: 1;
+      transition: flex 0.5s ease;
+    }
+
+    .archive-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid rgba(28,26,23,0.1);
+      margin-bottom: 20px;
+    }
+    .archive-tab {
+      background: none;
+      border: none;
+      padding: 8px 14px 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      color: var(--ink3);
+      cursor: pointer;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .archive-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+
+    .archive-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .archive-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .archive-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    .archive-item-text {
+      font-family: 'Lora', serif;
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    .archive-item-date {
+      font-size: 11px;
+      color: var(--ink3);
+      margin-top: 2px;
+    }
+
+    .archive-empty {
+      text-align: center;
+      padding: 40px 0;
+      font-family: 'Lora', serif;
+      font-style: italic;
+      color: var(--ink3);
+      font-size: 14px;
+    }
+
+    /* ── YEAR IN NOTICING OVERLAY ── */
+    #year-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(28,26,23,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+    #year-overlay.visible { opacity: 1; pointer-events: all; }
+    .year-card {
+      background: var(--cream);
+      border-radius: 20px;
+      padding: 36px 32px;
+      max-width: 340px;
+      width: calc(100% - 48px);
+      text-align: center;
+    }
+    .year-strip {
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    .year-title {
+      font-family: 'Lora', serif;
+      font-size: 20px;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .year-stat {
+      font-size: 12px;
+      color: var(--ink2);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .year-memory {
+      font-family: 'Lora', serif;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.6;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(28,26,23,0.1);
+    }
+    .year-close {
+      margin-top: 28px;
+      background: none;
+      border: 1px solid rgba(28,26,23,0.2);
+      border-radius: 999px;
+      padding: 10px 32px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      color: var(--ink2);
+      cursor: pointer;
+    }
+
+    /* ── SAVED FLASH ── */
+    #save-flash {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ink);
+      color: var(--cream);
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 13px;
+      padding: 10px 24px;
+      border-radius: 999px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+      white-space: nowrap;
+    }
+    #save-flash.visible { opacity: 1; }
+
+    /* scrollbar */
+    .screen::-webkit-scrollbar { width: 0; }
+  </style>
+</head>
+<body>
+<div id="app" class="screen-home">
+
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <span id="topbar-logo">nazar</span>
+    <button id="sound-toggle">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 9v6l-4-2V11l4-2zm0 0l6-4v14L9 15"/>
+        <path id="sound-wave1" d="M15 9a3 3 0 010 6"/>
+        <path id="sound-wave2" d="M18 6a7 7 0 010 12"/>
+      </svg>
+      <span id="sound-label">sound off</span>
+    </button>
+  </div>
+
+  <!-- SCREENS -->
+  <div id="screens">
+
+    <!-- HOME -->
+    <div class="screen active" id="screen-home">
+      <div class="home-eye-wrap">
+        <div class="home-eye-ring"></div>
+        <div class="home-eye-ring"></div>
+        <svg class="eye-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="24" cy="24" rx="20" ry="12" stroke="#1C1A17" stroke-width="1.2"/>
+          <circle cx="24" cy="24" r="6" stroke="#1C1A17" stroke-width="1.2"/>
+          <circle cx="24" cy="24" r="2.5" fill="#1C1A17"/>
+          <circle cx="26.5" cy="21.5" r="1" fill="#F7F4EF"/>
+        </svg>
+      </div>
+      <p class="home-title">Notice the world with intention.</p>
+      <div class="home-defn">
+        <div class="defn-word">nazar</div>
+        <div class="defn-pronounce">/ nə-ˈzar / · noun</div>
+        <div class="defn-body">
+          <em>Arabic · Urdu · Hindi</em><br><br>
+          The gaze — the act of seeing with intention. The quality of attention given to what we love.
+          Also: the protective gaze that keeps what you cherish safe; the eye that notices, and in noticing, blesses.
+        </div>
+      </div>
+      <button id="begin-btn">begin</button>
+    </div>
+
+    <!-- NOTICE -->
+    <div class="screen" id="screen-notice">
+      <div class="notice-date" id="notice-date"></div>
+      <div class="whisper" id="whisper" style="display:none"></div>
+      <div class="breathing-wrap">
+        <div class="breathing-ring"></div>
+        <div class="prompt-wrap">
+          <p class="prompt-text" id="prompt-text"></p>
+          <button id="new-prompt-btn">new prompt</button>
+        </div>
+      </div>
+      <div class="sense-grid" id="sense-grid"></div>
+      <textarea class="notice-textarea" id="notice-textarea" placeholder="let it come slowly…" rows="5"></textarea>
+      <button id="save-btn">let it settle</button>
+      <div class="save-confirm" id="save-confirm"></div>
+    </div>
+
+    <!-- JOURNAL -->
+    <div class="screen" id="screen-journal">
+      <div class="journal-header">your noticing</div>
+      <div id="journal-list"></div>
+    </div>
+
+    <!-- ARCHIVE -->
+    <div class="screen" id="screen-archive">
+      <div class="archive-header">archive</div>
+      <div class="color-strip" id="archive-strip"></div>
+      <div class="archive-tabs" id="archive-tabs">
+        <button class="archive-tab active" data-tab="all">all</button>
+        <button class="archive-tab" data-tab="sight">sight</button>
+        <button class="archive-tab" data-tab="smell">smell</button>
+        <button class="archive-tab" data-tab="feelings">feelings</button>
+      </div>
+      <div class="archive-grid" id="archive-grid"></div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" data-screen="notice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M1 12C3.5 7 7.5 4 12 4s8.5 3 11 8c-2.5 5-6.5 8-11 8S3.5 17 1 12z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+      notice
+    </button>
+    <button class="nav-btn" data-screen="journal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 4h16v16H4zM8 9h8M8 13h5"/>
+      </svg>
+      journal
+    </button>
+    <button class="nav-btn" data-screen="archive">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      archive
+    </button>
+  </nav>
+
+</div>
+
+<!-- YEAR OVERLAY -->
+<div id="year-overlay">
+  <div class="year-card">
+    <p class="year-title">A Year in Noticing</p>
+    <div class="year-strip" id="year-strip"></div>
+    <p class="year-stat" id="year-count"></p>
+    <p class="year-stat" id="year-sense"></p>
+    <p class="year-memory" id="year-memory"></p>
+    <button class="year-close" id="year-close">let it settle</button>
+  </div>
+</div>
+
+<!-- SAVE FLASH -->
+<div id="save-flash">it settled.</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── DATA ──────────────────────────────────────────────────────────────
+  const SENSES = [
+    { id: 'sight',   label: 'sight',   color: '#085041' },
+    { id: 'smell',   label: 'smell',   color: '#BA7517' },
+    { id: 'sound',   label: 'sound',   color: '#534AB7' },
+    { id: 'touch',   label: 'touch',   color: '#D85A30' },
+    { id: 'taste',   label: 'taste',   color: '#D4537E' },
+    { id: 'feeling', label: 'feeling', color: '#1D9E75' },
+  ];
+
+  const PROMPTS = [
+    "What did the world offer you today that you almost didn't take?",
+    "What were you carrying in your body that your mind hadn't named yet?",
+    "Where did time slow down without asking permission?",
+    "What small thing held more beauty than it had any right to?",
+    "What did you almost walk past without looking?",
+    "What did the light do today that it won't do again?",
+    "What sound asked you to stop, even for a moment?",
+    "Where did you feel the day in your skin before you felt it in your thoughts?",
+    "What did you notice that you weren't supposed to notice?",
+    "What reminded you that you are still, somehow, alive to all of this?",
+    "What did your body understand before your mind caught up?",
+    "Where did something ordinary briefly become something else?",
+    "What will you forget by tonight that deserved to be remembered?",
+    "What did the world smell like when you finally stopped moving?",
+    "What felt like a quiet beginning, even if nothing was beginning at all?",
+  ];
+
+  // ── STATE ─────────────────────────────────────────────────────────────
+  let entries = JSON.parse(localStorage.getItem('nazar_entries') || '[]');
+  let currentScreen = 'home';
+  let selectedSense = null;
+  let promptIndex = Math.floor(Math.random() * PROMPTS.length);
+  let soundOn = false;
+  let archiveTab = 'all';
+  let yearShown = new Set(JSON.parse(localStorage.getItem('nazar_year_shown') || '[]'));
+
+  // ── AUDIO ─────────────────────────────────────────────────────────────
+  let audioCtx = null;
+  let masterGain = null;
+  let drones = [];
+  let lfo = null;
+  let lfoGain = null;
+  const DRONE_FREQS = [110, 165, 220, 330];
+
+  function initAudio() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+    masterGain.connect(audioCtx.destination);
+
+    lfo = audioCtx.createOscillator();
+    lfo.type = 'sine';
+    lfo.frequency.value = 0.07;
+    lfoGain = audioCtx.createGain();
+    lfoGain.gain.value = 0.08;
+    lfo.connect(lfoGain);
+    lfo.start();
+
+    DRONE_FREQS.forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = freq + (i % 2 === 0 ? 0.5 : -0.5);
+      const g = audioCtx.createGain();
+      g.gain.value = 0.18;
+      lfoGain.connect(g.gain);
+      osc.connect(g);
+      g.connect(masterGain);
+      osc.start();
+      drones.push(osc);
+    });
+  }
+
+  async function toggleSound() {
+    if (!audioCtx) initAudio();
+    await audioCtx.resume();
+    soundOn = !soundOn;
+    const now = audioCtx.currentTime;
+    const targetVol = soundOn ? getTargetVol() : 0;
+    masterGain.gain.cancelScheduledValues(now);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+    masterGain.gain.linearRampToValueAtTime(targetVol, now + 3);
+    updateSoundUI();
+  }
+
+  function getTargetVol() {
+    if (!soundOn) return 0;
+    return currentScreen === 'notice' ? 0.6 : 0.18;
+  }
+
+  function adjustSoundForScreen() {
+    if (!audioCtx || !soundOn) return;
+    const now = audioCtx.currentTime;
+    masterGain.gain.cancelScheduledValues(now);
+    masterGain.gain.setValueAtTime(masterGain.gain.value, now);
+    masterGain.gain.linearRampToValueAtTime(getTargetVol(), now + 1.5);
+  }
+
+  function ringSave() {
+    if (!audioCtx) return;
+    audioCtx.resume().then(() => {
+      const osc = audioCtx.createOscillator();
+      const g = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 528;
+      g.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      g.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 2.5);
+      osc.connect(g);
+      g.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 2.5);
+    });
+  }
+
+  function updateSoundUI() {
+    const btn = document.getElementById('sound-toggle');
+    const label = document.getElementById('sound-label');
+    const w1 = document.getElementById('sound-wave1');
+    const w2 = document.getElementById('sound-wave2');
+    label.textContent = soundOn ? 'sound on' : 'sound off';
+    btn.classList.toggle('active', soundOn);
+    w1.style.opacity = soundOn ? '1' : '0.3';
+    w2.style.opacity = soundOn ? '1' : '0.3';
+  }
+
+  // ── NAVIGATION ────────────────────────────────────────────────────────
+  function goTo(screen) {
+    if (screen === currentScreen && screen !== 'home') return;
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+    const el = document.getElementById('screen-' + screen);
+    if (el) el.classList.add('active');
+
+    const app = document.getElementById('app');
+    app.className = 'screen-' + screen;
+
+    const navBtn = document.querySelector(`.nav-btn[data-screen="${screen}"]`);
+    if (navBtn) navBtn.classList.add('active');
+
+    currentScreen = screen;
+    adjustSoundForScreen();
+
+    if (screen === 'notice') renderNotice();
+    if (screen === 'journal') renderJournal();
+    if (screen === 'archive') renderArchive();
+  }
+
+  // ── NOTICE SCREEN ─────────────────────────────────────────────────────
+  function renderNotice() {
+    const dateEl = document.getElementById('notice-date');
+    const now = new Date();
+    dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+    renderPrompt();
+    renderSenseGrid();
+    renderWhisper();
+
+    document.getElementById('notice-textarea').value = '';
+    document.getElementById('save-confirm').textContent = '';
+    document.getElementById('save-btn').disabled = false;
+    selectedSense = null;
+    document.querySelectorAll('.sense-btn').forEach(b => b.classList.remove('selected'));
+  }
+
+  function renderPrompt() {
+    document.getElementById('prompt-text').textContent = PROMPTS[promptIndex];
+  }
+
+  function renderWhisper() {
+    const whisper = document.getElementById('whisper');
+    if (entries.length === 0) {
+      whisper.style.display = 'none';
+      return;
+    }
+    const past = entries[Math.floor(Math.random() * entries.length)];
+    whisper.style.display = 'block';
+    whisper.innerHTML = `<strong>you once noticed</strong>${past.text}`;
+  }
+
+  function renderSenseGrid() {
+    const grid = document.getElementById('sense-grid');
+    grid.innerHTML = '';
+    SENSES.forEach(sense => {
+      const btn = document.createElement('button');
+      btn.className = 'sense-btn';
+      btn.dataset.id = sense.id;
+      btn.innerHTML = `<span class="dot" style="background:${sense.color}"></span>${sense.label}`;
+      btn.addEventListener('click', () => {
+        selectedSense = sense.id;
+        document.querySelectorAll('.sense-btn').forEach(b => {
+          b.classList.remove('selected');
+          b.style.background = '';
+          b.style.borderColor = '';
+          b.style.color = '';
+        });
+        btn.classList.add('selected');
+        btn.style.background = sense.color;
+        btn.style.borderColor = sense.color;
+        btn.style.color = '#F7F4EF';
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  function saveEntry() {
+    const text = document.getElementById('notice-textarea').value.trim();
+    if (!text || !selectedSense) return;
+
+    const entry = {
+      id: Date.now(),
+      text,
+      sense: selectedSense,
+      date: new Date().toISOString(),
+    };
+
+    entries.unshift(entry);
+    localStorage.setItem('nazar_entries', JSON.stringify(entries));
+    ringSave();
+
+    document.getElementById('save-btn').disabled = true;
+    document.getElementById('save-confirm').textContent = 'it settled.';
+
+    showFlash();
+    checkYearMilestone();
+  }
+
+  function showFlash() {
+    const flash = document.getElementById('save-flash');
+    flash.classList.add('visible');
+    setTimeout(() => flash.classList.remove('visible'), 2500);
+  }
+
+  function checkYearMilestone() {
+    const total = entries.length;
+    if (total > 0 && total % 10 === 0 && !yearShown.has(total)) {
+      yearShown.add(total);
+      localStorage.setItem('nazar_year_shown', JSON.stringify([...yearShown]));
+      setTimeout(() => showYearOverlay(), 1500);
+    }
+  }
+
+  // ── JOURNAL ───────────────────────────────────────────────────────────
+  function renderJournal() {
+    const list = document.getElementById('journal-list');
+    list.innerHTML = '';
+    if (entries.length === 0) {
+      list.innerHTML = '<div class="journal-empty">Nothing yet.<br>Begin by noticing one thing.</div>';
+      return;
+    }
+    entries.forEach(entry => {
+      const sense = SENSES.find(s => s.id === entry.sense);
+      const d = new Date(entry.date);
+      const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const el = document.createElement('div');
+      el.className = 'journal-entry';
+      el.innerHTML = `
+        <div class="journal-entry-meta">
+          <span class="sense-tag" style="background:${sense ? sense.color : '#aaa'}">${entry.sense}</span>
+          <span class="entry-date">${dateStr}</span>
+        </div>
+        <div class="entry-text">${escHtml(entry.text)}</div>
+        <button class="remove-btn" data-id="${entry.id}">remove</button>
+      `;
+      el.querySelector('.remove-btn').addEventListener('click', () => removeEntry(entry.id));
+      list.appendChild(el);
+    });
+  }
+
+  function removeEntry(id) {
+    entries = entries.filter(e => e.id !== id);
+    localStorage.setItem('nazar_entries', JSON.stringify(entries));
+    renderJournal();
+  }
+
+  // ── ARCHIVE ───────────────────────────────────────────────────────────
+  function renderArchive() {
+    renderStrip();
+    renderArchiveGrid();
+  }
+
+  function renderStrip() {
+    const strip = document.getElementById('archive-strip');
+    strip.innerHTML = '';
+    if (entries.length === 0) {
+      strip.style.background = 'rgba(28,26,23,0.06)';
+      return;
+    }
+    strip.style.background = '';
+    const sorted = [...entries].reverse();
+    sorted.forEach(entry => {
+      const sense = SENSES.find(s => s.id === entry.sense);
+      const seg = document.createElement('div');
+      seg.className = 'color-strip-seg';
+      seg.style.background = sense ? sense.color : '#ccc';
+      strip.appendChild(seg);
+    });
+  }
+
+  function renderArchiveGrid() {
+    const grid = document.getElementById('archive-grid');
+    grid.innerHTML = '';
+    let filtered = entries;
+    if (archiveTab === 'sight') filtered = entries.filter(e => e.sense === 'sight');
+    else if (archiveTab === 'smell') filtered = entries.filter(e => e.sense === 'smell');
+    else if (archiveTab === 'feelings') filtered = entries.filter(e => e.sense === 'feeling');
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="archive-empty">Nothing here yet.</div>';
+      return;
+    }
+    filtered.forEach(entry => {
+      const sense = SENSES.find(s => s.id === entry.sense);
+      const d = new Date(entry.date);
+      const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const el = document.createElement('div');
+      el.className = 'archive-item';
+      el.innerHTML = `
+        <div class="archive-dot" style="background:${sense ? sense.color : '#ccc'}"></div>
+        <div>
+          <div class="archive-item-text">${escHtml(entry.text)}</div>
+          <div class="archive-item-date">${dateStr} · ${entry.sense}</div>
+        </div>
+      `;
+      grid.appendChild(el);
+    });
+  }
+
+  // ── YEAR OVERLAY ─────────────────────────────────────────────────────
+  function showYearOverlay() {
+    const overlay = document.getElementById('year-overlay');
+    const strip = document.getElementById('year-strip');
+    const countEl = document.getElementById('year-count');
+    const senseEl = document.getElementById('year-sense');
+    const memEl = document.getElementById('year-memory');
+
+    // strip
+    strip.innerHTML = '';
+    const sorted = [...entries].reverse();
+    sorted.forEach(entry => {
+      const sense = SENSES.find(s => s.id === entry.sense);
+      const seg = document.createElement('div');
+      seg.style.flex = '1';
+      seg.style.background = sense ? sense.color : '#ccc';
+      strip.appendChild(seg);
+    });
+
+    // stats
+    countEl.textContent = `${entries.length} observations`;
+    const counts = {};
+    entries.forEach(e => { counts[e.sense] = (counts[e.sense] || 0) + 1; });
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+    senseEl.textContent = top ? `Most felt through: ${top[0]}` : '';
+
+    // random memory
+    const mem = entries[Math.floor(Math.random() * entries.length)];
+    memEl.textContent = mem ? `"${mem.text}"` : '';
+
+    overlay.classList.add('visible');
+  }
+
+  // ── UTILITIES ─────────────────────────────────────────────────────────
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function fmtDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // ── EVENT BINDINGS ────────────────────────────────────────────────────
+  document.getElementById('begin-btn').addEventListener('click', () => goTo('notice'));
+  document.getElementById('topbar-logo').addEventListener('click', () => goTo('home'));
+  document.getElementById('sound-toggle').addEventListener('click', toggleSound);
+  document.getElementById('new-prompt-btn').addEventListener('click', () => {
+    promptIndex = (promptIndex + 1) % PROMPTS.length;
+    renderPrompt();
+  });
+  document.getElementById('save-btn').addEventListener('click', saveEntry);
+
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => goTo(btn.dataset.screen));
+  });
+
+  document.querySelectorAll('.archive-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      archiveTab = tab.dataset.tab;
+      document.querySelectorAll('.archive-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderArchiveGrid();
+    });
+  });
+
+  document.getElementById('year-close').addEventListener('click', () => {
+    document.getElementById('year-overlay').classList.remove('visible');
+  });
+
+  updateSoundUI();
+})();
+</script>
+</body>
+</html>

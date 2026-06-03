@@ -1,0 +1,37 @@
+Build a single-file HTML app called Nazar — a meditative daily noticing journal. The entire app lives in one index.html file with no external dependencies except Google Fonts (Nunito) and the Web Audio API for ambient sound.
+Core concept: A zen, minimal journaling app where users write one sensory observation per day. No streaks, no gamification, no sign-up required. The experience should feel like putting a stone down — slow, intentional, meditative.
+Screens (5):
+
+Home/Onboard — Shows a breathing animated eye icon, the title "Notice the world with intention.", and a dictionary definition of "nazar" (Arabic/Urdu/Hindi: the gaze, the act of seeing with intention; also the protective gaze that keeps what you love safe). Has a sound toggle pill and a "begin" button. Tapping the word "nazar" in the top bar from any screen returns here.
+Notice — The main writing screen. Shows today's date, a "new prompt" link, a slow breathing ring animation, a rotating poetic prompt (Brianna Wiest-style, e.g. "What did the light do today that it won't do again?"), a 6-option sense grid (sight, smell, sound, touch, taste, feeling), a serif textarea with placeholder "let it come slowly…", and a save button that says "let it settle." If the user has past observations, one surfaces above the prompt as a quiet whisper: you once noticed / "[past observation]" fading in slowly after 0.6s.
+Journal — Chronological list of all observations. Each entry shows the sense label, the text, the date, and a subtle remove option.
+Archive — Color strip made from sense colors across all observations. Four tabs: colors, smells, feelings, all. After every 10 observations, a "Year in Noticing" overlay appears showing the color strip, total count, most-used sense, and one random memory.
+
+Navigation: Bottom nav with 3 items — notice, journal, archive. No memory tab (memory is folded into the notice screen as the whisper).
+Sound: Web Audio API ambient drone — four detuned sine waves at 110hz, 165hz, 220hz, 330hz with slow LFO tremolo. Fades in over 3 seconds when toggled on. On save, a single 528hz tone rings and fades over 2.5 seconds. Must use .resume() as a promise to unlock on mobile browsers. Sound fades to 30% on non-notice screens.
+Design:
+
+Colors: --cream: #F7F4EF, --ink: #1C1A17, --ink2: #6B6560, --ink3: #B0A89E
+Font: Nunito 300/400 — rounded, no sharp edges
+Sense colors: sight #085041, smell #BA7517, sound #534AB7, touch #D85A30, taste #D4537E, feeling #1D9E75
+Transitions: 0.8s opacity fades between screens
+Breathing animation: 5s ease-in-out infinite scale pulse
+Everything saves to localStorage
+
+Prompts (rotate randomly):
+
+"What did the world offer you today that you almost didn't take?"
+"What were you carrying in your body that your mind hadn't named yet?"
+"Where did time slow down without asking permission?"
+"What small thing held more beauty than it had any right to?"
+"What did you almost walk past without looking?"
+"What did the light do today that it won't do again?"
+"What sound asked you to stop, even for a moment?"
+"Where did you feel the day in your skin before you felt it in your thoughts?"
+"What did you notice that you weren't supposed to notice?"
+"What reminded you that you are still, somehow, alive to all of this?"
+"What did your body understand before your mind caught up?"
+"Where did something ordinary briefly become something else?"
+"What will you forget by tonight that deserved to be remembered?"
+"What did the world smell like when you finally stopped moving?"
+"What felt like a quiet beginning, even if nothing was beginning at all?"
