@@ -148,22 +148,22 @@
 
     .home-eye-wrap {
       position: relative;
-      width: 90px;
-      height: 90px;
-      margin-bottom: 36px;
+      width: 130px;
+      height: 130px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .home-eye-ring {
       position: absolute;
-      inset: 0;
       border-radius: 50%;
-      border: 1.5px solid rgba(28,26,23,0.15);
+      border: 1px solid rgba(28,26,23,0.13);
       animation: breathe 5s ease-in-out infinite;
     }
-    .home-eye-ring:nth-child(2) {
-      inset: 8px;
-      border-color: rgba(28,26,23,0.1);
-      animation-delay: 0.4s;
-    }
+    .home-eye-ring:nth-child(1) { width: 130px; height: 130px; animation-delay: 0s; }
+    .home-eye-ring:nth-child(2) { width: 100px; height: 100px; animation-delay: 0.5s; border-color: rgba(28,26,23,0.09); }
+    .home-eye-ring:nth-child(3) { width: 70px;  height: 70px;  animation-delay: 1s;  border-color: rgba(28,26,23,0.07); }
     @keyframes breathe {
       0%, 100% { transform: scale(1); opacity: 0.5; }
       50% { transform: scale(1.12); opacity: 1; }
@@ -231,12 +231,13 @@
 
     /* ── NOTICE SCREEN ── */
     .notice-date {
-      font-size: 11px;
-      color: var(--ink3);
-      letter-spacing: 0.1em;
+      font-size: 12px;
+      color: var(--ink2);
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 24px;
-      padding-top: 8px;
+      margin-bottom: 20px;
+      padding-top: 10px;
+      font-weight: 400;
     }
 
     .whisper {
@@ -311,31 +312,38 @@
     }
     .sense-btn {
       border: 1.5px solid rgba(28,26,23,0.1);
-      border-radius: 10px;
+      border-radius: 12px;
       background: transparent;
-      padding: 10px 6px;
+      padding: 12px 6px;
       font-family: 'Nunito', sans-serif;
       font-size: 12px;
       font-weight: 400;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       color: var(--ink2);
       cursor: pointer;
-      transition: all 0.2s;
+      transition: transform 0.18s ease, border-color 0.25s, background 0.35s, color 0.25s, box-shadow 0.35s;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
     }
+    .sense-btn:active { transform: scale(0.94); }
     .sense-btn .dot {
-      width: 8px; height: 8px;
+      width: 9px; height: 9px;
       border-radius: 50%;
-      transition: transform 0.2s;
+      transition: transform 0.3s ease, box-shadow 0.3s;
     }
     .sense-btn.selected {
-      border-width: 1.5px;
-      color: var(--cream);
+      color: #fff;
+      box-shadow: 0 4px 20px -4px rgba(0,0,0,0.25);
+      transform: scale(1.04);
     }
-    .sense-btn.selected .dot { transform: scale(1.4); }
+    .sense-btn.selected .dot {
+      transform: scale(1.5);
+      box-shadow: 0 0 6px rgba(255,255,255,0.5);
+    }
 
     .notice-textarea {
       width: 100%;
@@ -358,8 +366,8 @@
     #save-btn {
       width: 100%;
       margin-top: 16px;
-      background: var(--ink);
-      color: var(--cream);
+      background: var(--sense-color, var(--ink));
+      color: #fff;
       border: none;
       border-radius: 12px;
       padding: 16px;
@@ -367,11 +375,12 @@
       font-size: 14px;
       letter-spacing: 0.06em;
       cursor: pointer;
-      transition: opacity 0.3s;
+      transition: opacity 0.3s, background 0.5s ease, box-shadow 0.4s;
       margin-bottom: 8px;
+      box-shadow: 0 4px 24px -6px var(--sense-shadow, rgba(28,26,23,0.35));
     }
-    #save-btn:hover { opacity: 0.85; }
-    #save-btn:disabled { opacity: 0.35; cursor: default; }
+    #save-btn:hover:not(:disabled) { opacity: 0.88; }
+    #save-btn:disabled { opacity: 0.3; cursor: default; box-shadow: none; }
 
     .save-confirm {
       text-align: center;
@@ -405,8 +414,15 @@
 
     .journal-entry {
       border-bottom: 1px solid rgba(28,26,23,0.07);
-      padding: 18px 0;
+      padding: 20px 0 20px 18px;
       position: relative;
+    }
+    .journal-entry-bar {
+      position: absolute;
+      left: 0; top: 20px; bottom: 20px;
+      width: 2.5px;
+      border-radius: 2px;
+      opacity: 0.7;
     }
     .journal-entry-meta {
       display: flex;
@@ -617,6 +633,53 @@
     /* scrollbar */
     .screen::-webkit-scrollbar { width: 0; }
 
+    /* ── GRAIN TEXTURE ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 160px 160px;
+    }
+
+    /* ── SENSE TINT ── */
+    #sense-tint {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0;
+      transition: background-color 1.2s ease, opacity 1.2s ease;
+    }
+
+    /* ── SAVE BLOOM ── */
+    #save-bloom {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 90;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bloom-circle {
+      position: absolute;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      transform: scale(0);
+      opacity: 0;
+      animation: bloom-out 1.8s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+    }
+    @keyframes bloom-out {
+      0%   { transform: scale(0);   opacity: 0; }
+      15%  { opacity: 0.22; }
+      100% { transform: scale(200); opacity: 0; }
+    }
+
     /* ── JOURNAL HEADER ROW ── */
     .journal-header-row {
       display: flex;
@@ -769,6 +832,7 @@
       <div class="home-eye-wrap">
         <div class="home-eye-ring"></div>
         <div class="home-eye-ring"></div>
+        <div class="home-eye-ring"></div>
         <svg class="eye-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <ellipse cx="24" cy="24" rx="20" ry="12" stroke="#1C1A17" stroke-width="1.2"/>
           <circle cx="24" cy="24" r="6" stroke="#1C1A17" stroke-width="1.2"/>
@@ -910,6 +974,10 @@
     <button class="export-cancel" id="export-cancel-btn">not now</button>
   </div>
 </div>
+
+<!-- SENSE TINT + SAVE BLOOM -->
+<div id="sense-tint"></div>
+<div id="save-bloom"></div>
 
 <!-- SAVE FLASH -->
 <div id="save-flash">it settled.</div>
@@ -1131,6 +1199,26 @@
     whisper.innerHTML = `<strong>you once noticed</strong>${past.text}`;
   }
 
+  function applySenseTint(color) {
+    const tint = document.getElementById('sense-tint');
+    if (!color) {
+      tint.style.opacity = '0';
+    } else {
+      tint.style.backgroundColor = color;
+      tint.style.opacity = '0.05';
+    }
+  }
+
+  function doSaveBloom(color) {
+    const container = document.getElementById('save-bloom');
+    container.innerHTML = '';
+    const circle = document.createElement('div');
+    circle.className = 'bloom-circle';
+    circle.style.background = color;
+    container.appendChild(circle);
+    setTimeout(() => { container.innerHTML = ''; }, 2000);
+  }
+
   function renderSenseGrid() {
     const grid = document.getElementById('sense-grid');
     grid.innerHTML = '';
@@ -1145,12 +1233,14 @@
           b.classList.remove('selected');
           b.style.background = '';
           b.style.borderColor = '';
-          b.style.color = '';
         });
         btn.classList.add('selected');
         btn.style.background = sense.color;
         btn.style.borderColor = sense.color;
-        btn.style.color = '#F7F4EF';
+        applySenseTint(sense.color);
+        const saveBtn = document.getElementById('save-btn');
+        saveBtn.style.setProperty('--sense-color', sense.color);
+        saveBtn.style.setProperty('--sense-shadow', sense.color + '80');
       });
       grid.appendChild(btn);
     });
@@ -1160,6 +1250,7 @@
     const text = document.getElementById('notice-textarea').value.trim();
     if (!text || !selectedSense) return;
 
+    const sense = SENSES.find(s => s.id === selectedSense);
     const entry = {
       id: Date.now(),
       text,
@@ -1170,10 +1261,12 @@
     entries.unshift(entry);
     localStorage.setItem('nazar_entries', JSON.stringify(entries));
     ringSave();
+    if (sense) doSaveBloom(sense.color);
 
     document.getElementById('save-btn').disabled = true;
     document.getElementById('save-confirm').textContent = 'it settled.';
 
+    applySenseTint(null);
     showFlash();
     checkYearMilestone();
   }
@@ -1208,9 +1301,9 @@
       const el = document.createElement('div');
       el.className = 'journal-entry';
       el.innerHTML = `
+        <div class="journal-entry-bar" style="background:${sense ? sense.color : '#aaa'}"></div>
         <div class="journal-entry-meta">
-          <span class="sense-tag" style="background:${sense ? sense.color : '#aaa'}">${entry.sense}</span>
-          <span class="entry-date">${dateStr}</span>
+          <span class="entry-date">${dateStr} · ${entry.sense}</span>
         </div>
         <div class="entry-text">${escHtml(entry.text)}</div>
         <button class="remove-btn" data-id="${entry.id}">remove</button>
