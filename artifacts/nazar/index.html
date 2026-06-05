@@ -265,6 +265,101 @@
     }
     #begin-btn:hover { opacity: 0.85; transform: translateY(-1px); }
 
+    /* ── TIMER SCREEN ── */
+    #screen-timer {
+      justify-content: center;
+      gap: 0;
+    }
+    .timer-cue {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 44px;
+      animation: fadeIn 1s ease both;
+    }
+    .timer-field {
+      position: relative;
+      width: 260px; height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 44px;
+    }
+    .timer-svg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 260px; height: 260px;
+      transform: rotate(-90deg);
+    }
+    .timer-ring-bg {
+      fill: none;
+      stroke: rgba(28,26,23,0.08);
+      stroke-width: 1.5;
+    }
+    .timer-ring-prog {
+      fill: none;
+      stroke: rgba(28,26,23,0.28);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-dasharray: 691.15;
+      stroke-dashoffset: 0;
+    }
+    .timer-center {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .timer-center .eye-svg { width: 52px; height: 52px; }
+    .timer-time {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      font-family: 'Nunito', sans-serif;
+    }
+    .timer-word {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 22px;
+      color: var(--ink2);
+      letter-spacing: 0.04em;
+      min-height: 32px;
+      transition: opacity 0.8s ease;
+    }
+    .timer-word.fading { opacity: 0; }
+    #timer-stop-btn {
+      background: none;
+      border: none;
+      color: var(--ink3);
+      font-family: 'Nunito', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+      margin-top: 8px;
+    }
+    #timer-stop-btn:hover { color: var(--ink2); }
+    #minute-btn {
+      background: none;
+      border: none;
+      color: var(--ink3);
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      margin-top: 14px;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+      animation: fadeUp 0.8s 1.05s ease both;
+    }
+    #minute-btn:hover { color: var(--ink2); }
+
     /* ── NOTICE SCREEN ── */
     .notice-date-wrap {
       padding-top: 8px;
@@ -935,6 +1030,29 @@
       <p class="home-poem">the act of seeing with intention.<br>the gaze that makes the ordinary sacred.</p>
       <p class="home-origin">Arabic · Urdu · Hindi</p>
       <button id="begin-btn">begin</button>
+      <button id="minute-btn">spend a minute noticing first</button>
+    </div>
+
+    <!-- TIMER -->
+    <div class="screen" id="screen-timer">
+      <p class="timer-cue">open your senses. notice everything.</p>
+      <div class="timer-field">
+        <svg class="timer-svg" viewBox="0 0 260 260">
+          <circle class="timer-ring-bg" cx="130" cy="130" r="110"/>
+          <circle class="timer-ring-prog" cx="130" cy="130" r="110" id="timer-prog"/>
+        </svg>
+        <div class="timer-center">
+          <svg class="eye-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="24" cy="24" rx="20" ry="12" stroke="#1C1A17" stroke-width="1.2"/>
+            <circle cx="24" cy="24" r="6" stroke="#1C1A17" stroke-width="1.2"/>
+            <circle cx="24" cy="24" r="2.5" fill="#1C1A17"/>
+            <circle cx="26.5" cy="21.5" r="1" fill="#F7F4EF"/>
+          </svg>
+          <p class="timer-time" id="timer-time">1:00</p>
+        </div>
+      </div>
+      <p class="timer-word" id="timer-word">look.</p>
+      <button id="timer-stop-btn">end early</button>
     </div>
 
     <!-- NOTICE -->
@@ -1640,8 +1758,84 @@ ${rows}
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
+  // ── TIMER ─────────────────────────────────────────────────────────────
+  const TIMER_DURATION = 60000;
+  const TIMER_CIRC = 2 * Math.PI * 110; // ≈ 691.15
+  const TIMER_WORDS = ['look.', 'listen.', 'feel.', 'breathe.', 'notice.'];
+  let timerRAF = null;
+  let timerStart = null;
+  let timerWordIdx = 0;
+  let timerWordTimeout = null;
+
+  function startTimer() {
+    timerStart = performance.now();
+    timerWordIdx = 0;
+    setTimerWord(0);
+    goTo('timer');
+    timerTick();
+  }
+
+  function setTimerWord(idx) {
+    const el = document.getElementById('timer-word');
+    el.classList.add('fading');
+    clearTimeout(timerWordTimeout);
+    setTimeout(() => {
+      el.textContent = TIMER_WORDS[idx % TIMER_WORDS.length];
+      el.classList.remove('fading');
+    }, 800);
+    timerWordTimeout = setTimeout(() => {
+      timerWordIdx++;
+      if (timerWordIdx < TIMER_WORDS.length) setTimerWord(timerWordIdx);
+    }, 12000);
+  }
+
+  function timerTick() {
+    const elapsed = performance.now() - timerStart;
+    const remaining = Math.max(0, TIMER_DURATION - elapsed);
+    const progress = elapsed / TIMER_DURATION;
+
+    document.getElementById('timer-prog').style.strokeDashoffset = TIMER_CIRC * progress;
+
+    const secs = Math.ceil(remaining / 1000);
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    document.getElementById('timer-time').textContent = `${m}:${s.toString().padStart(2, '0')}`;
+
+    if (remaining <= 0) {
+      timerComplete();
+      return;
+    }
+    timerRAF = requestAnimationFrame(timerTick);
+  }
+
+  function timerComplete() {
+    clearTimeout(timerWordTimeout);
+    document.getElementById('timer-time').textContent = '0:00';
+    document.getElementById('timer-prog').style.strokeDashoffset = TIMER_CIRC;
+    const wordEl = document.getElementById('timer-word');
+    wordEl.classList.add('fading');
+    wordEl.textContent = 'it passed.';
+    setTimeout(() => wordEl.classList.remove('fading'), 50);
+    ringSave();
+    setTimeout(() => {
+      goTo('notice');
+      renderNotice();
+    }, 2200);
+  }
+
+  function stopTimer() {
+    if (timerRAF) { cancelAnimationFrame(timerRAF); timerRAF = null; }
+    clearTimeout(timerWordTimeout);
+    timerStart = null;
+    document.getElementById('timer-prog').style.strokeDashoffset = 0;
+    document.getElementById('timer-time').textContent = '1:00';
+    goTo('home');
+  }
+
   // ── EVENT BINDINGS ────────────────────────────────────────────────────
   document.getElementById('begin-btn').addEventListener('click', () => goTo('notice'));
+  document.getElementById('minute-btn').addEventListener('click', startTimer);
+  document.getElementById('timer-stop-btn').addEventListener('click', stopTimer);
   document.getElementById('topbar-logo').addEventListener('click', () => goTo('home'));
   document.getElementById('sound-toggle').addEventListener('click', toggleSound);
   document.getElementById('save-btn').addEventListener('click', saveEntry);
