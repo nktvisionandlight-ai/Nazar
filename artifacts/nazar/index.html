@@ -360,6 +360,38 @@
     }
     #minute-btn:hover { color: var(--ink2); }
 
+    /* ── OTHERS NOTICED ── */
+    .others-wrap {
+      margin-top: 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: fadeUp 0.8s 1.3s ease both;
+    }
+    .others-rule {
+      width: 32px;
+      height: 1px;
+      background: rgba(28,26,23,0.12);
+    }
+    .others-label {
+      font-size: 10px;
+      color: var(--ink3);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .others-fragment {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--ink2);
+      line-height: 1.65;
+      max-width: 260px;
+      text-align: center;
+      transition: opacity 0.9s ease;
+    }
+    .others-fragment.fading { opacity: 0; }
+
     /* ── NOTICE SCREEN ── */
     .notice-date-wrap {
       padding-top: 8px;
@@ -1031,6 +1063,11 @@
       <p class="home-origin">Arabic · Urdu · Hindi</p>
       <button id="begin-btn">begin</button>
       <button id="minute-btn">spend a minute noticing first</button>
+      <div class="others-wrap">
+        <div class="others-rule"></div>
+        <p class="others-label">others have noticed —</p>
+        <p class="others-fragment" id="others-fragment"></p>
+      </div>
     </div>
 
     <!-- TIMER -->
@@ -1781,6 +1818,46 @@ ${rows}
     const d = new Date(iso);
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
+
+  // ── OTHERS NOTICED ────────────────────────────────────────────────────
+  const OTHERS_FRAGMENTS = [
+    'the way steam rises from a cup left on the windowsill.',
+    'dust moving slowly through a beam of afternoon light.',
+    'the particular quiet that comes after rain.',
+    'how a stranger\'s laugh sounded exactly like someone I miss.',
+    'the smell of the air just before a storm arrived.',
+    'light catching inside a glass of water on the table.',
+    'a crack in the pavement shaped like a river.',
+    'the weight of a very small bird on a branch.',
+    'how certain music makes a room feel larger.',
+    'the sound of a door closing softly in another room.',
+    'the exact blue of the sky at five in the evening.',
+    'my own hands, looking older for just a moment.',
+    'the texture of bark against a palm, rough and patient.',
+    'how bread smells when it is almost done.',
+    'the feeling of cold air meeting warm skin at the door.',
+    'the way a candle recovers after almost going out.',
+  ];
+  let othersIdx = Math.floor(Math.random() * OTHERS_FRAGMENTS.length);
+
+  function cycleOthers() {
+    const el = document.getElementById('others-fragment');
+    if (!el) return;
+    el.classList.add('fading');
+    setTimeout(() => {
+      othersIdx = (othersIdx + 1) % OTHERS_FRAGMENTS.length;
+      el.textContent = OTHERS_FRAGMENTS[othersIdx];
+      el.classList.remove('fading');
+    }, 900);
+  }
+
+  function initOthers() {
+    const el = document.getElementById('others-fragment');
+    if (el) el.textContent = OTHERS_FRAGMENTS[othersIdx];
+    setInterval(cycleOthers, 7000);
+  }
+
+  initOthers();
 
   // ── TIMER ─────────────────────────────────────────────────────────────
   const TIMER_DURATION = 60000;
