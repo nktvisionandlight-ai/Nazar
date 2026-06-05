@@ -1242,7 +1242,30 @@
   let drones = [];
   let lfo = null;
   let lfoGain = null;
+  let audioUnlocked = false;
   const DRONE_FREQS = [110, 165, 220, 330];
+
+  function ensureAudioCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+      masterGain.connect(audioCtx.destination);
+    }
+  }
+
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
+    ensureAudioCtx();
+    // iOS requires a silent buffer played synchronously in a user gesture
+    const buf = audioCtx.createBuffer(1, 1, 22050);
+    const src = audioCtx.createBufferSource();
+    src.buffer = buf;
+    src.connect(audioCtx.destination);
+    src.start(0);
+    audioCtx.resume().catch(() => {});
+  }
 
   function createAudioGraph() {
     lfo = audioCtx.createOscillator();
@@ -1268,15 +1291,10 @@
   }
 
   async function toggleSound() {
+    unlockAudio();
     soundOn = !soundOn;
 
     if (soundOn) {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        masterGain = audioCtx.createGain();
-        masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-        masterGain.connect(audioCtx.destination);
-      }
       await audioCtx.resume();
       if (drones.length === 0) createAudioGraph();
       const now = audioCtx.currentTime;
@@ -1284,7 +1302,7 @@
       masterGain.gain.setValueAtTime(masterGain.gain.value, now);
       masterGain.gain.linearRampToValueAtTime(getTargetVol(), now + 3);
     } else {
-      if (audioCtx && masterGain) {
+      if (masterGain) {
         const now = audioCtx.currentTime;
         masterGain.gain.cancelScheduledValues(now);
         masterGain.gain.setValueAtTime(masterGain.gain.value, now);
@@ -1309,7 +1327,7 @@
   }
 
   function ringSave() {
-    if (!audioCtx) return;
+    ensureAudioCtx();
     audioCtx.resume().then(() => {
       const osc = audioCtx.createOscillator();
       const g = audioCtx.createGain();
@@ -1466,7 +1484,13 @@
     document.getElementById('settle-sense-label').textContent = sense.id;
     document.getElementById('settle-bar').style.background = sense.color;
     overlay.classList.add('visible');
-    setTimeout(() => overlay.classList.remove('visible'), 3200);
+    setTimeout(() => {
+      overlay.classList.remove('visible');
+      setTimeout(() => {
+        goTo('journal');
+        renderJournal();
+      }, 700);
+    }, 3200);
   }
 
   function saveEntry() {
@@ -1864,6 +1888,10 @@ ${rows}
   document.getElementById('export-overlay').addEventListener('click', (e) => {
     if (e.target === document.getElementById('export-overlay')) hideExportOverlay();
   });
+
+  // Unlock audio on first gesture — critical for iOS Safari
+  document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });
+  document.addEventListener('click', unlockAudio, { once: true });
 
   updateSoundUI();
 
