@@ -1131,7 +1131,7 @@
         <button class="archive-tab active" data-tab="all">all</button>
         <button class="archive-tab" data-tab="sight">sight</button>
         <button class="archive-tab" data-tab="smell">smell</button>
-        <button class="archive-tab" data-tab="feelings">feelings</button>
+        <button class="archive-tab" data-tab="feeling">feeling</button>
       </div>
       <div class="archive-grid" id="archive-grid"></div>
     </div>
@@ -1635,7 +1635,7 @@
     let filtered = entries;
     if (archiveTab === 'sight') filtered = entries.filter(e => e.sense === 'sight');
     else if (archiveTab === 'smell') filtered = entries.filter(e => e.sense === 'smell');
-    else if (archiveTab === 'feelings') filtered = entries.filter(e => e.sense === 'feeling');
+    else if (archiveTab === 'feeling') filtered = entries.filter(e => e.sense === 'feeling');
 
     if (filtered.length === 0) {
       grid.innerHTML = '<div class="archive-empty">Nothing here yet.</div>';
@@ -1837,6 +1837,22 @@ ${rows}
     'how bread smells when it is almost done.',
     'the feeling of cold air meeting warm skin at the door.',
     'the way a candle recovers after almost going out.',
+    'the sound of rain on a window that wasn\'t expected.',
+    'how the light changed in a room and no one mentioned it.',
+    'the faint smell of someone\'s cooking through an open window.',
+    'the softness of something that had been worn many times.',
+    'a bird landing and leaving before anyone looked up.',
+    'the moment when a conversation became something warmer.',
+    'the temperature of a stone that had been in the sun all day.',
+    'how quiet the world became after the music stopped.',
+    'the smell of old books, like a different kind of time.',
+    'a single thread unravelling at the edge of a sleeve.',
+    'the way traffic sounds at night, like distant water.',
+    'the feeling of a cold floor underfoot, first thing in the morning.',
+    'the moment before sleep when nothing felt unfinished.',
+    'a shadow moving slowly across a wall all afternoon.',
+    'the weight of a blanket, just heavy enough.',
+    'how someone\'s face looked different when they were really listening.',
   ];
   let othersIdx = Math.floor(Math.random() * OTHERS_FRAGMENTS.length);
 
