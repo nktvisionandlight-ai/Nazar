@@ -146,14 +146,52 @@
       gap: 0;
     }
 
+    /* ── SPLASH ── */
+    #splash {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 5000;
+      transition: opacity 1s ease;
+    }
+    #splash.fade-out { opacity: 0; pointer-events: none; }
+    .splash-word {
+      font-family: 'Lora', serif;
+      font-size: 38px;
+      letter-spacing: 0.1em;
+      color: var(--ink);
+      animation: breathe 4s ease-in-out infinite;
+    }
+    .splash-sub {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fadeIn 1s 0.6s ease forwards;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* ── HOME ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
     .home-eye-wrap {
       position: relative;
       width: 130px;
       height: 130px;
-      margin-bottom: 40px;
+      margin-bottom: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
+      animation: fadeUp 0.9s 0.1s ease both;
     }
     .home-eye-ring {
       position: absolute;
@@ -176,68 +214,114 @@
       width: 48px; height: 48px;
     }
 
-    .home-title {
+    .home-word {
       font-family: 'Lora', serif;
+      font-size: 44px;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+      margin-bottom: 6px;
+      animation: fadeUp 0.8s 0.25s ease both;
+    }
+    .home-pronounce {
+      font-size: 12px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      margin-bottom: 24px;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+    .home-poem {
+      font-family: 'Lora', serif;
+      font-style: italic;
       font-size: 15px;
       color: var(--ink2);
-      font-style: italic;
-      letter-spacing: 0.02em;
-      line-height: 1.6;
+      line-height: 1.8;
       max-width: 260px;
-      margin-bottom: 32px;
+      margin-bottom: 18px;
+      animation: fadeUp 0.8s 0.55s ease both;
     }
-
-    .home-defn {
-      background: rgba(28,26,23,0.04);
-      border-radius: 12px;
-      padding: 18px 22px;
-      max-width: 320px;
-      margin-bottom: 40px;
-      text-align: left;
-    }
-    .defn-word {
-      font-family: 'Lora', serif;
-      font-size: 16px;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-    .defn-pronounce {
-      font-size: 11px;
+    .home-origin {
+      font-size: 10px;
       color: var(--ink3);
-      letter-spacing: 0.05em;
-      margin-bottom: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 44px;
+      animation: fadeUp 0.8s 0.7s ease both;
     }
-    .defn-body {
-      font-size: 13px;
-      color: var(--ink2);
-      line-height: 1.65;
-    }
-    .defn-body em { font-family: 'Lora', serif; font-style: italic; }
 
     #begin-btn {
       background: var(--ink);
       color: var(--cream);
       border: none;
       border-radius: 999px;
-      padding: 14px 48px;
+      padding: 15px 52px;
       font-family: 'Nunito', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 400;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      transition: opacity 0.3s;
-    }
-    #begin-btn:hover { opacity: 0.85; }
-
-    /* ── NOTICE SCREEN ── */
-    .notice-date {
-      font-size: 12px;
-      color: var(--ink2);
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      margin-bottom: 20px;
-      padding-top: 10px;
-      font-weight: 400;
+      cursor: pointer;
+      transition: opacity 0.3s, transform 0.3s;
+      animation: fadeUp 0.8s 0.85s ease both;
+    }
+    #begin-btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+    /* ── NOTICE SCREEN ── */
+    .notice-date-wrap {
+      padding-top: 8px;
+      margin-bottom: 16px;
+    }
+    .notice-day {
+      font-family: 'Lora', serif;
+      font-size: 26px;
+      color: var(--ink);
+      letter-spacing: 0.01em;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+    .notice-date {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── SETTLE OVERLAY ── */
+    #settle-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 36px;
+      z-index: 80;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease;
+      text-align: center;
+    }
+    #settle-overlay.visible { opacity: 1; }
+    .settle-bar {
+      width: 28px; height: 2px;
+      border-radius: 1px;
+      margin: 0 auto 32px;
+      transition: background 0.5s;
+    }
+    .settle-text {
+      font-family: 'Lora', serif;
+      font-size: 19px;
+      line-height: 1.75;
+      color: var(--ink);
+      max-width: 300px;
+      font-style: italic;
+      margin-bottom: 28px;
+    }
+    .settle-sense-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink3);
     }
 
     .whisper {
@@ -809,6 +893,12 @@
   </style>
 </head>
 <body>
+<!-- SPLASH -->
+<div id="splash">
+  <p class="splash-word">nazar</p>
+  <p class="splash-sub">a daily ritual of noticing</p>
+</div>
+
 <div id="app" class="screen-home">
 
   <!-- TOP BAR -->
@@ -840,22 +930,19 @@
           <circle cx="26.5" cy="21.5" r="1" fill="#F7F4EF"/>
         </svg>
       </div>
-      <p class="home-title">Notice the world with intention.</p>
-      <div class="home-defn">
-        <div class="defn-word">nazar</div>
-        <div class="defn-pronounce">/ nə-ˈzar / · noun</div>
-        <div class="defn-body">
-          <em>Arabic · Urdu · Hindi</em><br><br>
-          The gaze — the act of seeing with intention. The quality of attention given to what we love.
-          Also: the protective gaze that keeps what you cherish safe; the eye that notices, and in noticing, blesses.
-        </div>
-      </div>
+      <p class="home-word">nazar</p>
+      <p class="home-pronounce">/ nə-ˈzar /</p>
+      <p class="home-poem">the act of seeing with intention.<br>the gaze that makes the ordinary sacred.</p>
+      <p class="home-origin">Arabic · Urdu · Hindi</p>
       <button id="begin-btn">begin</button>
     </div>
 
     <!-- NOTICE -->
     <div class="screen" id="screen-notice">
-      <div class="notice-date" id="notice-date"></div>
+      <div class="notice-date-wrap">
+        <div class="notice-day" id="notice-day"></div>
+        <div class="notice-date" id="notice-date"></div>
+      </div>
       <div class="whisper" id="whisper" style="display:none"></div>
       <div class="breathing-wrap">
         <div class="breathing-ring"></div>
@@ -978,6 +1065,13 @@
 <!-- SENSE TINT + SAVE BLOOM -->
 <div id="sense-tint"></div>
 <div id="save-bloom"></div>
+
+<!-- SETTLE OVERLAY -->
+<div id="settle-overlay">
+  <div class="settle-bar" id="settle-bar"></div>
+  <p class="settle-text" id="settle-text"></p>
+  <p class="settle-sense-label" id="settle-sense-label"></p>
+</div>
 
 <!-- SAVE FLASH -->
 <div id="save-flash">it settled.</div>
@@ -1148,9 +1242,11 @@
 
   // ── NOTICE SCREEN ─────────────────────────────────────────────────────
   function renderNotice() {
-    const dateEl = document.getElementById('notice-date');
     const now = new Date();
-    dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    document.getElementById('notice-day').textContent =
+      now.toLocaleDateString('en-US', { weekday: 'long' });
+    document.getElementById('notice-date').textContent =
+      now.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
     renderAmbientLine();
     cycleAmbient();
@@ -1246,6 +1342,15 @@
     });
   }
 
+  function showSettleOverlay(text, sense) {
+    const overlay = document.getElementById('settle-overlay');
+    document.getElementById('settle-text').textContent = `"${text}"`;
+    document.getElementById('settle-sense-label').textContent = sense.id;
+    document.getElementById('settle-bar').style.background = sense.color;
+    overlay.classList.add('visible');
+    setTimeout(() => overlay.classList.remove('visible'), 3200);
+  }
+
   function saveEntry() {
     const text = document.getElementById('notice-textarea').value.trim();
     if (!text || !selectedSense) return;
@@ -1261,13 +1366,15 @@
     entries.unshift(entry);
     localStorage.setItem('nazar_entries', JSON.stringify(entries));
     ringSave();
-    if (sense) doSaveBloom(sense.color);
+    if (sense) {
+      doSaveBloom(sense.color);
+      showSettleOverlay(text, sense);
+    }
 
     document.getElementById('save-btn').disabled = true;
-    document.getElementById('save-confirm').textContent = 'it settled.';
+    document.getElementById('save-confirm').textContent = '';
 
     applySenseTint(null);
-    showFlash();
     checkYearMilestone();
   }
 
@@ -1565,6 +1672,13 @@ ${rows}
   });
 
   updateSoundUI();
+
+  // ── SPLASH ────────────────────────────────────────────────────────────
+  setTimeout(() => {
+    const splash = document.getElementById('splash');
+    splash.classList.add('fade-out');
+    setTimeout(() => splash.remove(), 1100);
+  }, 1900);
 })();
 </script>
 </body>
