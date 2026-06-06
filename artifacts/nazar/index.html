@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Nazar</title>
   <meta name="description" content="A meditative daily noticing journal." />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Nazar" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#F7F4EF" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1C1814" media="(prefers-color-scheme: dark)" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&family=Lora:ital@0;1&display=swap" rel="stylesheet">
@@ -93,12 +99,14 @@
       overflow-y: auto;
       padding: 0 24px 16px;
       opacity: 0;
+      transform: translateY(10px);
       pointer-events: none;
-      transition: opacity 0.8s ease;
+      transition: opacity 0.7s ease, transform 0.7s ease;
       -webkit-overflow-scrolling: touch;
     }
     .screen.active {
       opacity: 1;
+      transform: translateY(0);
       pointer-events: all;
     }
 
@@ -107,6 +115,7 @@
       display: flex;
       border-top: 1px solid rgba(28,26,23,0.08);
       flex-shrink: 0;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
     .nav-btn {
       flex: 1;
@@ -627,6 +636,13 @@
       border-bottom: 1px solid rgba(28,26,23,0.07);
       padding: 20px 0 20px 18px;
       position: relative;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .journal-entry.entry-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
     .journal-entry-bar {
       position: absolute;
@@ -1005,6 +1021,76 @@
       letter-spacing: 0.05em;
     }
 
+    /* ── CUSTOM CURSOR (desktop) ── */
+    @media (pointer: fine) {
+      body, button, textarea, a { cursor: none !important; }
+      #cursor {
+        position: fixed;
+        width: 7px; height: 7px;
+        border-radius: 50%;
+        background: var(--ink);
+        pointer-events: none;
+        z-index: 9999;
+        top: 0; left: 0;
+        transform: translate(-50%, -50%);
+        transition: transform 0.12s ease, opacity 0.3s;
+        mix-blend-mode: multiply;
+        will-change: transform;
+      }
+    }
+    @media (pointer: coarse) { #cursor { display: none; } }
+
+    /* ── DARK MODE ── */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --cream: #1C1814;
+        --ink:   #EDE8E0;
+        --ink2:  #A89F95;
+        --ink3:  #6B635C;
+      }
+      html, body { background: var(--cream); }
+      #topbar { border-bottom-color: rgba(237,232,224,0.07); }
+      #bottom-nav { border-top-color: rgba(237,232,224,0.08); }
+      .journal-entry { border-bottom-color: rgba(237,232,224,0.07); }
+      .journal-header { color: var(--ink2); }
+      .notice-textarea {
+        border-color: rgba(237,232,224,0.12);
+        background: rgba(237,232,224,0.03);
+        color: var(--ink);
+      }
+      .notice-textarea:focus { border-color: rgba(237,232,224,0.25); }
+      .sense-btn { background: rgba(237,232,224,0.06); }
+      .sense-btn.selected { background: rgba(237,232,224,0.14); }
+      .archive-tab { color: var(--ink3); border-bottom-color: transparent; }
+      .archive-tab.active { color: var(--ink); border-bottom-color: var(--ink); }
+      .archive-item { border-bottom-color: rgba(237,232,224,0.07); }
+      .others-rule { background: rgba(237,232,224,0.1); }
+      .home-eye-ring { border-color: rgba(237,232,224,0.13); }
+      .home-eye-ring:nth-child(2) { border-color: rgba(237,232,224,0.09); }
+      .home-eye-ring:nth-child(3) { border-color: rgba(237,232,224,0.06); }
+      .breathing-ring { border-color: rgba(237,232,224,0.18); }
+      .breathing-ring:nth-child(1) { border-color: rgba(237,232,224,0.18); }
+      .timer-ring-bg { stroke: rgba(237,232,224,0.1); }
+      .timer-ring-prog { stroke: rgba(237,232,224,0.38); }
+      /* SVG eye on all screens */
+      .eye-svg ellipse { stroke: rgba(237,232,224,0.88); }
+      .eye-svg circle:nth-child(2) { stroke: rgba(237,232,224,0.88); }
+      .eye-svg circle:nth-child(3) { fill: rgba(237,232,224,0.88); }
+      .eye-svg circle:nth-child(4) { fill: #1C1814; }
+      /* overlays */
+      #splash { background: var(--cream); }
+      #settle-overlay { background: var(--cream); }
+      #save-flash { background: var(--cream); color: var(--ink2); }
+      .year-card { background: #28221C; border: 1px solid rgba(237,232,224,0.08); }
+      #year-overlay { background: rgba(20,17,14,0.9); }
+      .export-sheet { background: #28221C; }
+      #export-overlay { background: rgba(20,17,14,0.85); }
+      /* misc */
+      #cursor { mix-blend-mode: screen; }
+      .export-option { border-color: rgba(237,232,224,0.1); }
+      .export-option:hover { background: rgba(237,232,224,0.05); }
+    }
+
     /* ── PRINT STYLES ── */
     @media print {
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -1026,6 +1112,7 @@
   <p class="splash-sub">a daily ritual of noticing</p>
 </div>
 
+<div id="cursor"></div>
 <div id="app" class="screen-home">
 
   <!-- TOP BAR -->
@@ -1363,7 +1450,12 @@
     masterGain.gain.linearRampToValueAtTime(getTargetVol(), now + 1.5);
   }
 
+  function haptic(pattern) {
+    if (navigator.vibrate) navigator.vibrate(pattern);
+  }
+
   function ringSave() {
+    haptic([30, 50, 30]);
     ensureAudioCtx();
     audioCtx.resume().then(() => {
       const osc = audioCtx.createOscillator();
@@ -1407,6 +1499,9 @@
 
     currentScreen = screen;
     adjustSoundForScreen();
+
+    const pageTitles = { home: 'nazar', notice: 'nazar · notice', timer: 'nazar · one minute', journal: 'nazar · your noticing', archive: 'nazar · archive' };
+    document.title = pageTitles[screen] || 'nazar';
 
     if (screen === 'notice') renderNotice();
     if (screen === 'journal') renderJournal();
@@ -1577,15 +1672,16 @@
     const list = document.getElementById('journal-list');
     list.innerHTML = '';
     if (entries.length === 0) {
-      list.innerHTML = '<div class="journal-empty">Nothing yet.<br>Begin by noticing one thing.</div>';
+      list.innerHTML = '<div class="journal-empty">your noticings will gather here.</div>';
       return;
     }
-    entries.forEach(entry => {
+    entries.forEach((entry, i) => {
       const sense = SENSES.find(s => s.id === entry.sense);
       const d = new Date(entry.date);
       const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const el = document.createElement('div');
       el.className = 'journal-entry';
+      el.style.transitionDelay = `${i * 55}ms`;
       el.innerHTML = `
         <div class="journal-entry-bar" style="background:${sense ? sense.color : '#aaa'}"></div>
         <div class="journal-entry-meta">
@@ -1597,6 +1693,17 @@
       el.querySelector('.remove-btn').addEventListener('click', () => removeEntry(entry.id));
       list.appendChild(el);
     });
+
+    // Staggered reveal via Intersection Observer
+    const observer = new IntersectionObserver((changes) => {
+      changes.forEach(c => {
+        if (c.isIntersecting) {
+          c.target.classList.add('entry-visible');
+          observer.unobserve(c.target);
+        }
+      });
+    }, { threshold: 0.05 });
+    list.querySelectorAll('.journal-entry').forEach(el => observer.observe(el));
   }
 
   function removeEntry(id) {
@@ -1949,6 +2056,7 @@ ${rows}
     wordEl.classList.add('fading');
     wordEl.textContent = 'it passed.';
     setTimeout(() => wordEl.classList.remove('fading'), 50);
+    haptic([60, 80, 120]);
     ringSave();
     setTimeout(() => {
       goTo('notice');
@@ -1997,6 +2105,32 @@ ${rows}
   document.getElementById('export-overlay').addEventListener('click', (e) => {
     if (e.target === document.getElementById('export-overlay')) hideExportOverlay();
   });
+
+  // ── SWIPE NAVIGATION ──────────────────────────────────────────────────
+  const SWIPEABLE = ['notice', 'journal', 'archive'];
+  let swipeX = 0, swipeY = 0;
+  document.addEventListener('touchstart', e => {
+    swipeX = e.touches[0].clientX;
+    swipeY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - swipeX;
+    const dy = e.changedTouches[0].clientY - swipeY;
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+    const idx = SWIPEABLE.indexOf(currentScreen);
+    if (idx === -1) return;
+    if (dx < 0 && idx < SWIPEABLE.length - 1) goTo(SWIPEABLE[idx + 1]);
+    if (dx > 0 && idx > 0) goTo(SWIPEABLE[idx - 1]);
+  }, { passive: true });
+
+  // ── CUSTOM CURSOR ─────────────────────────────────────────────────────
+  const cursorEl = document.getElementById('cursor');
+  if (cursorEl && window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', e => {
+      cursorEl.style.left = e.clientX + 'px';
+      cursorEl.style.top = e.clientY + 'px';
+    }, { passive: true });
+  }
 
   // Unlock audio on first gesture — critical for iOS Safari
   document.addEventListener('touchstart', unlockAudio, { once: true, passive: true });

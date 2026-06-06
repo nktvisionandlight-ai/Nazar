@@ -1,44 +1,58 @@
-# [Project name]
+# Nazar — Daily Noticing Journal
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A meditative single-page web app for noticing and recording small beautiful things each day.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
-- `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- App is at `artifacts/nazar/index.html`, served via Vite
+- No build step needed — pure HTML/CSS/JS single file
+- Workflow: `artifacts/nazar: web` (auto-started)
 
 ## Stack
 
-- pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Pure HTML + CSS + JS, zero runtime dependencies
+- Google Fonts: Nunito (UI) + Lora (body/entries)
+- Web Audio API for ambient sound + save bell
+- `localStorage` only — no server, no account
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/nazar/index.html` — entire app (~2100 lines)
+- CSS vars: `--cream`, `--ink`, `--ink2`, `--ink3` (light + dark overrides in `@media (prefers-color-scheme: dark)`)
+- SENSES array: sight / sound / smell / taste / feeling (each with color)
+- 48 "others noticed" rotating observations
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Single-file design intentional — no bundler complexity, instant load, easy share
+- localStorage key: `nazar_entries` (array of `{id, text, sense, date}`)
+- Audio: `AudioContext` unlocked on first touch/click for iOS Safari compatibility
+- Dark mode via CSS custom property overrides in `@media (prefers-color-scheme: dark)` — no JS toggle
+- Intersection Observer drives staggered journal entry reveal (no scroll event listeners)
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Home screen: eye illustration, rotating "others noticed" observations, ambient sound toggle
+- Notice screen: date, sense selector, textarea, 1-minute optional timer with depleting ring
+- Timer: cycling sense words (look/listen/feel/breathe/notice), bell on complete, haptic feedback
+- Settle overlay: 3.2s italic entry display before journaling to journal
+- Journal screen: chronological entries with staggered fade-in reveal
+- Archive screen: filter by sense (sight / smell / feeling)
+- Year overlay: shown every 10 entries as a quiet milestone
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- No streaks, no gamification, no journaling prompts
+- No server storage — localStorage only
+- Everyday beauty, not abstract poetry ("Life integrates art")
+- Goal: award-winning, quiet, intimate feel
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Eye SVG ellipses/circles use hardcoded stroke/fill — dark mode overrides via `.eye-svg ellipse`, `.eye-svg circle:nth-child(n)` selectors
+- `ringSave()` and `timerComplete()` both call `haptic()` — navigator.vibrate is mobile-only (silent on desktop)
+- Swipe navigation only works between `['notice', 'journal', 'archive']` screens, not from home/timer
+- Custom cursor only activates on `(pointer: fine)` devices; hidden on touch via `(pointer: coarse)`
 
 ## Pointers
 
