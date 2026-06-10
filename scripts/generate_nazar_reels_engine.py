@@ -99,6 +99,54 @@ CTAS = [
     "Open Nazar when something small stays with you.",
 ]
 
+VIRAL_QUESTIONS = [
+    "Would you have noticed this?",
+    "What tiny detail did you almost miss today?",
+    "Why do moments like this stay with us?",
+    "Who would understand this kind of noticing?",
+    "What is the smallest thing you saved today?",
+]
+
+REFLECTIVE_QUESTIONS = [
+    "What did the day quietly give you?",
+    "What ordinary thing felt tender for a second?",
+    "Where did beauty appear without announcing itself?",
+    "What detail asked nothing from you except attention?",
+    "What did you want to keep before it passed?",
+]
+
+PRODUCT_QUESTIONS = [
+    "What would you save in Nazar today?",
+    "What small observation belongs in your Nazar journal?",
+    "What did you notice that you would want to remember later?",
+    "What tiny moment would you keep if there were a quiet place for it?",
+    "What did today give you that is worth writing down?",
+]
+
+VIRAL_CTAS = [
+    "Send this to someone who notices small things.",
+    "Save this before the day gets loud.",
+    "Share this with someone who would understand.",
+    "Keep this for your next quiet moment.",
+    "Send it to the friend who notices everything.",
+]
+
+REFLECTIVE_CTAS = [
+    "Let one small thing stay with you.",
+    "Keep looking softly.",
+    "Return to the smallest true thing.",
+    "Carry the detail with you.",
+    "Let the ordinary be enough.",
+]
+
+PRODUCT_CTAS = [
+    "Try Nazar.",
+    "Download Nazar.",
+    "Start noticing with Nazar.",
+    "Keep it in Nazar.",
+    "Open Nazar and save one thing.",
+]
+
 PALETTES = [
     {"bg": "#F7F1E7", "accent": "#B98243", "muted": "#9C9183", "ink": "#252018"},
     {"bg": "#EEF0F5", "accent": "#534AB7", "muted": "#8A90A3", "ink": "#22283A"},
@@ -247,6 +295,12 @@ def build_items() -> list[dict]:
             hashtags = " ".join(CATEGORY_TAGS[category])
             cta = CTAS[(day - 1) % len(CTAS)]
             formatted_caption = f"{observation}\n\n{question}\n\n{hashtags}\n\n{cta}"
+            variants = build_caption_variants(
+                category=category,
+                day=day,
+                category_index=category_index,
+                observation=observation,
+            )
             items.append(
                 {
                     "reel": day,
@@ -260,11 +314,82 @@ def build_items() -> list[dict]:
                     "hashtags": hashtags,
                     "cta": cta,
                     "formatted_caption": formatted_caption,
+                    **variants,
                     "palette": palette,
                 }
             )
             day += 1
     return items
+
+
+def build_caption_variants(
+    *,
+    category: str,
+    day: int,
+    category_index: int,
+    observation: str,
+) -> dict[str, str]:
+    tags = " ".join(CATEGORY_TAGS[category])
+    variant_tags = {
+        "viral": f"{tags} #sharethis",
+        "reflective": f"{tags} #quietbeauty",
+        "product": tags,
+    }
+
+    viral_caption = make_viral_caption(observation)
+    reflective_caption = make_reflective_caption(observation)
+    product_caption = make_product_caption(observation)
+
+    viral_question = VIRAL_QUESTIONS[(day - 1) % len(VIRAL_QUESTIONS)]
+    reflective_question = REFLECTIVE_QUESTIONS[category_index % len(REFLECTIVE_QUESTIONS)]
+    product_question = PRODUCT_QUESTIONS[(day + category_index) % len(PRODUCT_QUESTIONS)]
+
+    viral_cta = VIRAL_CTAS[(day - 1) % len(VIRAL_CTAS)]
+    reflective_cta = REFLECTIVE_CTAS[(day + 1) % len(REFLECTIVE_CTAS)]
+    product_cta = PRODUCT_CTAS[(day - 1) % len(PRODUCT_CTAS)]
+
+    return {
+        "viral_caption": viral_caption,
+        "viral_question": viral_question,
+        "viral_hashtags": variant_tags["viral"],
+        "viral_cta": viral_cta,
+        "viral_formatted_caption": format_caption(
+            viral_caption, viral_question, variant_tags["viral"], viral_cta
+        ),
+        "reflective_caption": reflective_caption,
+        "reflective_question": reflective_question,
+        "reflective_hashtags": variant_tags["reflective"],
+        "reflective_cta": reflective_cta,
+        "reflective_formatted_caption": format_caption(
+            reflective_caption, reflective_question, variant_tags["reflective"], reflective_cta
+        ),
+        "product_caption": product_caption,
+        "product_question": product_question,
+        "product_hashtags": variant_tags["product"],
+        "product_cta": product_cta,
+        "product_formatted_caption": format_caption(
+            product_caption, product_question, variant_tags["product"], product_cta
+        ),
+    }
+
+
+def make_viral_caption(observation: str) -> str:
+    if len(observation) <= 118:
+        return observation
+    first_clause = observation.split(",")[0].split(".")[0].strip()
+    return f"{first_clause}. The kind of detail that changes the whole scene."
+
+
+def make_reflective_caption(observation: str) -> str:
+    return f"{observation} A small moment, but not an empty one."
+
+
+def make_product_caption(observation: str) -> str:
+    return f"{observation} Nazar gives these small observations a quiet place to live."
+
+
+def format_caption(caption: str, question: str, hashtags: str, cta: str) -> str:
+    return f"{caption}\n\n{question}\n\n{hashtags}\n\n{cta}"
 
 
 def textfile(temp_dir: Path, name: str, value: str) -> Path:
@@ -391,6 +516,21 @@ def write_metadata(items: list[dict]) -> None:
                 "hashtags",
                 "cta",
                 "formatted_caption",
+                "viral_caption",
+                "viral_question",
+                "viral_hashtags",
+                "viral_cta",
+                "viral_formatted_caption",
+                "reflective_caption",
+                "reflective_question",
+                "reflective_hashtags",
+                "reflective_cta",
+                "reflective_formatted_caption",
+                "product_caption",
+                "product_question",
+                "product_hashtags",
+                "product_cta",
+                "product_formatted_caption",
             ],
         )
         writer.writeheader()
@@ -408,6 +548,21 @@ def write_metadata(items: list[dict]) -> None:
                     "hashtags": item["hashtags"],
                     "cta": item["cta"],
                     "formatted_caption": item["formatted_caption"],
+                    "viral_caption": item["viral_caption"],
+                    "viral_question": item["viral_question"],
+                    "viral_hashtags": item["viral_hashtags"],
+                    "viral_cta": item["viral_cta"],
+                    "viral_formatted_caption": item["viral_formatted_caption"],
+                    "reflective_caption": item["reflective_caption"],
+                    "reflective_question": item["reflective_question"],
+                    "reflective_hashtags": item["reflective_hashtags"],
+                    "reflective_cta": item["reflective_cta"],
+                    "reflective_formatted_caption": item["reflective_formatted_caption"],
+                    "product_caption": item["product_caption"],
+                    "product_question": item["product_question"],
+                    "product_hashtags": item["product_hashtags"],
+                    "product_cta": item["product_cta"],
+                    "product_formatted_caption": item["product_formatted_caption"],
                 }
             )
 
