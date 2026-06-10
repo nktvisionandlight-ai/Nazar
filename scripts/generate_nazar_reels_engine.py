@@ -26,17 +26,78 @@ HEIGHT = 1920
 FPS = 24
 
 CATEGORY_TAGS = {
-    "coffee shops": "#coffeeshop #quietmoments #ordinarybeauty",
-    "city walks": "#citywalk #streetpoetry #noticing",
-    "train rides": "#trainride #commuterlife #quietbeauty",
-    "family moments": "#familymoments #tenderness #smallbeautifulthings",
-    "nostalgia": "#nostalgia #memorykeeping #dailyritual",
-    "rain": "#rainyday #softliving #mindfulmoments",
-    "nature": "#naturemoments #slowdaily #presencepractice",
-    "travel": "#travelmoments #noticingpractice #romanticizeyourlife",
-    "quiet beauty": "#quietbeauty #softlife #ordinarymagic",
-    "things people usually miss": "#thingstomiss #noticing #nazar",
+    "coffee shops": ["#nazarapp", "#coffeeshop", "#quietmoments", "#ordinarybeauty"],
+    "city walks": ["#nazarapp", "#citywalk", "#streetpoetry", "#noticing"],
+    "train rides": ["#nazarapp", "#trainride", "#commuterlife", "#quietbeauty"],
+    "family moments": ["#nazarapp", "#familymoments", "#tenderness", "#smallbeautifulthings"],
+    "nostalgia": ["#nazarapp", "#nostalgia", "#memorykeeping", "#dailyritual"],
+    "rain": ["#nazarapp", "#rainyday", "#softliving", "#mindfulmoments"],
+    "nature": ["#nazarapp", "#naturemoments", "#slowdaily", "#presencepractice"],
+    "travel": ["#nazarapp", "#travelmoments", "#noticingpractice", "#ordinarybeauty"],
+    "quiet beauty": ["#nazarapp", "#quietbeauty", "#softlife", "#ordinarymagic"],
+    "things people usually miss": ["#nazarapp", "#thingstomiss", "#noticing", "#everydaybeauty"],
 }
+
+QUESTIONS_BY_CATEGORY = {
+    "coffee shops": [
+        "What did you notice before your first sip today?",
+        "What tiny cafe detail stayed with you longer than expected?",
+        "What did someone leave behind that told a quiet story?",
+    ],
+    "city walks": [
+        "What small street moment did you almost walk past?",
+        "What did the city show you when you slowed down?",
+        "What ordinary scene felt briefly cinematic today?",
+    ],
+    "train rides": [
+        "What did you notice between where you were and where you were going?",
+        "What small thing changed when the train started moving?",
+        "What did the window give back to you today?",
+    ],
+    "family moments": [
+        "What small family gesture did you want to keep?",
+        "What ordinary kindness happened in your home today?",
+        "What detail made someone feel especially familiar?",
+    ],
+    "nostalgia": [
+        "What object brought a whole year back for a second?",
+        "What memory returned through texture, sound, or smell?",
+        "What did you find that still seemed to remember you?",
+    ],
+    "rain": [
+        "What did the rain make you notice differently?",
+        "What changed color when the weather changed?",
+        "What small sound did the rain make louder?",
+    ],
+    "nature": [
+        "What did the living world do quietly near you today?",
+        "What small natural thing asked for your attention?",
+        "What did you see outside that felt unhurried?",
+    ],
+    "travel": [
+        "What detail from the journey felt worth keeping?",
+        "What did an unfamiliar place make newly beautiful?",
+        "What small travel moment felt like it belonged only to you?",
+    ],
+    "quiet beauty": [
+        "What softened the room today?",
+        "What ordinary thing looked briefly forgiven?",
+        "What small beauty did you catch before it changed?",
+    ],
+    "things people usually miss": [
+        "What did you notice that most people would miss?",
+        "What tiny detail proved the day was alive?",
+        "What small thing kept happening quietly in the background?",
+    ],
+}
+
+CTAS = [
+    "Try Nazar.",
+    "Keep one small thing in Nazar.",
+    "Notice with Nazar.",
+    "Save it in Nazar.",
+    "Open Nazar when something small stays with you.",
+]
 
 PALETTES = [
     {"bg": "#F7F1E7", "accent": "#B98243", "muted": "#9C9183", "ink": "#252018"},
@@ -180,13 +241,12 @@ def build_items() -> list[dict]:
     day = 1
     durations = [7, 8, 9, 10, 11, 12, 8, 9, 10, 11]
     for category, observations in OBSERVATIONS_BY_CATEGORY.items():
-        for hook, observation in observations:
+        for category_index, (hook, observation) in enumerate(observations):
             palette = PALETTES[(day - 1) % len(PALETTES)]
-            caption = (
-                f"{observation}\n\n"
-                "Nazar is for saving the small things that make a day feel lived.\n\n"
-                "Save this if it made you notice something nearby."
-            )
+            question = QUESTIONS_BY_CATEGORY[category][category_index % len(QUESTIONS_BY_CATEGORY[category])]
+            hashtags = " ".join(CATEGORY_TAGS[category])
+            cta = CTAS[(day - 1) % len(CTAS)]
+            formatted_caption = f"{observation}\n\n{question}\n\n{hashtags}\n\n{cta}"
             items.append(
                 {
                     "reel": day,
@@ -195,8 +255,11 @@ def build_items() -> list[dict]:
                     "duration": durations[(day - 1) % len(durations)],
                     "hook": hook,
                     "observation": observation,
-                    "caption": caption,
-                    "hashtags": f"#nazar {CATEGORY_TAGS[category]}",
+                    "caption": observation,
+                    "question": question,
+                    "hashtags": hashtags,
+                    "cta": cta,
+                    "formatted_caption": formatted_caption,
                     "palette": palette,
                 }
             )
@@ -324,7 +387,10 @@ def write_metadata(items: list[dict]) -> None:
                 "hook",
                 "observation",
                 "caption",
+                "question",
                 "hashtags",
+                "cta",
+                "formatted_caption",
             ],
         )
         writer.writeheader()
@@ -338,7 +404,10 @@ def write_metadata(items: list[dict]) -> None:
                     "hook": item["hook"],
                     "observation": item["observation"],
                     "caption": item["caption"],
+                    "question": item["question"],
                     "hashtags": item["hashtags"],
+                    "cta": item["cta"],
+                    "formatted_caption": item["formatted_caption"],
                 }
             )
 
