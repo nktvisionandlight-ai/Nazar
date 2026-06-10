@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nazar Content Studio</title>
+  <meta name="description" content="Create Nazar Instagram posts, stories, and captions from a 365-prompt JSON file." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --cream: #F7F4EF;
+      --ink: #1C1A17;
+      --ink2: #6B6560;
+      --ink3: #B0A89E;
+      --line: rgba(28, 26, 23, 0.12);
+      --card: #FFFDF8;
+      --accent: #085041;
+      color-scheme: light;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(186, 117, 23, 0.08), transparent 28%),
+        radial-gradient(circle at 84% 18%, rgba(8, 80, 65, 0.08), transparent 32%),
+        var(--cream);
+      color: var(--ink);
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-weight: 300;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 180px 180px;
+      z-index: 20;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      width: min(1240px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(42px, 7vw, 84px);
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      margin: 0 0 10px;
+      font-weight: 300;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--ink3);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .dek {
+      max-width: 620px;
+      margin: 0;
+      color: var(--ink2);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .back-link {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 15px;
+      text-decoration: none;
+      color: var(--ink2);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      background: rgba(255, 253, 248, 0.5);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 380px) 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255, 253, 248, 0.68);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: 0 24px 70px rgba(28, 26, 23, 0.06);
+      backdrop-filter: blur(12px);
+    }
+
+    .panel h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 25px;
+      font-weight: 400;
+      margin: 0 0 8px;
+    }
+
+    .hint {
+      margin: 0 0 18px;
+      color: var(--ink3);
+      font-size: 12px;
+      line-height: 1.6;
+      letter-spacing: 0.03em;
+    }
+
+    label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--ink3);
+      margin: 18px 0 7px;
+      font-weight: 400;
+    }
+
+    input[type="file"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(247, 244, 239, 0.74);
+      color: var(--ink);
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-size: 13px;
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 214px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    button,
+    .button {
+      border: 1px solid rgba(28, 26, 23, 0.16);
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+
+    button.secondary,
+    .button.secondary {
+      background: transparent;
+      color: var(--ink2);
+    }
+
+    button:hover,
+    .button:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      color: var(--ink3);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px;
+      font-style: italic;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(220px, 0.78fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .preview-card {
+      background: rgba(255, 253, 248, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 16px;
+    }
+
+    .preview-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      color: var(--ink3);
+      font-size: 10px;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 18px;
+      background: var(--cream);
+      box-shadow: 0 16px 50px rgba(28, 26, 23, 0.08);
+    }
+
+    .caption-panel {
+      margin-top: 18px;
+    }
+
+    .caption-panel h2 {
+      margin-bottom: 6px;
+    }
+
+    .micro {
+      color: var(--ink3);
+      font-size: 11px;
+      line-height: 1.6;
+      margin: 12px 0 0;
+    }
+
+    @media (max-width: 940px) {
+      header,
+      .grid,
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+      header {
+        display: block;
+      }
+      .back-link {
+        display: inline-block;
+        margin-top: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <div>
+        <p class="eyebrow">Nazar Content Studio</p>
+        <h1 class="brand">nazar</h1>
+        <p class="dek">Upload a JSON file containing 365 prompts, choose a day, and generate a branded Instagram post, Instagram story, and caption. The default Nazar content engine is loaded automatically.</p>
+      </div>
+      <a class="back-link" href="./">return to app</a>
+    </header>
+
+    <section class="grid" aria-label="Content Studio">
+      <aside class="panel">
+        <h2>Input</h2>
+        <p class="hint">Use the built-in 365-day engine or upload your own JSON. Supported formats: an array of prompt strings, an array of prompt objects, or an object with an <code>items</code> or <code>prompts</code> array.</p>
+
+        <label for="json-file">JSON file</label>
+        <input id="json-file" type="file" accept="application/json,.json" />
+
+        <div class="button-row">
+          <button type="button" id="load-default">Load Nazar 365</button>
+        </div>
+
+        <label for="day-select">Choose content day</label>
+        <select id="day-select"></select>
+
+        <label for="prompt-text">Prompt</label>
+        <textarea id="prompt-text"></textarea>
+
+        <div class="button-row">
+          <button type="button" id="render-btn">Render assets</button>
+          <button type="button" class="secondary" id="copy-caption">Copy caption</button>
+        </div>
+        <p class="status" id="status">Loading Nazar content...</p>
+      </aside>
+
+      <section>
+        <div class="preview-grid">
+          <div class="preview-card">
+            <div class="preview-title">
+              <span>Instagram post</span>
+              <span>1080 x 1350</span>
+            </div>
+            <canvas id="post-canvas" width="1080" height="1350"></canvas>
+            <div class="button-row">
+              <button type="button" id="download-post">Download post</button>
+            </div>
+          </div>
+
+          <div class="preview-card">
+            <div class="preview-title">
+              <span>Instagram story</span>
+              <span>1080 x 1920</span>
+            </div>
+            <canvas id="story-canvas" width="1080" height="1920"></canvas>
+            <div class="button-row">
+              <button type="button" id="download-story">Download story</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel caption-panel">
+          <h2>Caption</h2>
+          <p class="hint">Edit this before posting if the day needs a more specific voice.</p>
+          <textarea id="caption-output"></textarea>
+          <div class="button-row">
+            <button type="button" id="download-caption">Download caption</button>
+          </div>
+          <p class="micro">Brand note: keep the Nazar mark subtle. The content should feel like a quiet ritual, not an ad.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    (function() {
+      'use strict';
+
+      const DEFAULT_CONTENT_PATH = './content/nazar-content-engine.json';
+      const BRAND = {
+        cream: '#F7F4EF',
+        ink: '#1C1A17',
+        ink2: '#6B6560',
+        ink3: '#B0A89E',
+        accent: '#085041',
+        warm: '#BA7517',
+      };
+
+      const state = {
+        items: [],
+        selectedIndex: 0,
+      };
+
+      const els = {
+        file: document.getElementById('json-file'),
+        loadDefault: document.getElementById('load-default'),
+        daySelect: document.getElementById('day-select'),
+        promptText: document.getElementById('prompt-text'),
+        caption: document.getElementById('caption-output'),
+        status: document.getElementById('status'),
+        render: document.getElementById('render-btn'),
+        copyCaption: document.getElementById('copy-caption'),
+        postCanvas: document.getElementById('post-canvas'),
+        storyCanvas: document.getElementById('story-canvas'),
+        downloadPost: document.getElementById('download-post'),
+        downloadStory: document.getElementById('download-story'),
+        downloadCaption: document.getElementById('download-caption'),
+      };
+
+      function setStatus(message) {
+        els.status.textContent = message;
+      }
+
+      function normalizeContent(data) {
+        const rawItems = Array.isArray(data)
+          ? data
+          : Array.isArray(data.items)
+            ? data.items
+            : Array.isArray(data.prompts)
+              ? data.prompts
+              : [];
+
+        return rawItems.map((item, index) => {
+          const prompt = typeof item === 'string'
+            ? item
+            : item.noticingPrompt || item.prompt || item.text || item.title || '';
+          const caption = typeof item === 'string'
+            ? makeCaption(prompt)
+            : item.instagramCaption || item.caption || makeCaption(prompt);
+          const design = typeof item === 'string' ? null : item.shareCardDesign || item.design || null;
+          return {
+            dayOfYear: item.dayOfYear || index + 1,
+            label: item.monthName && item.dayOfMonth
+              ? `${item.monthName} ${item.dayOfMonth}`
+              : `Day ${item.dayOfYear || index + 1}`,
+            prompt: prompt.trim(),
+            caption: caption.trim(),
+            design,
+            sense: item.sense || 'noticing',
+          };
+        }).filter(item => item.prompt);
+      }
+
+      function makeCaption(prompt) {
+        const subject = prompt.replace(/\.$/, '').toLowerCase();
+        return `Today I noticed: ${subject}.\n\nA small thing, saved before it disappeared.\n\nWhat did you notice today?\n\n#nazar #noticing #ordinarybeauty`;
+      }
+
+      function loadItems(data, sourceLabel) {
+        const items = normalizeContent(data);
+        if (items.length === 0) {
+          throw new Error('No prompts found in JSON file.');
+        }
+        state.items = items;
+        state.selectedIndex = 0;
+        renderDayOptions();
+        selectItem(0);
+        setStatus(`${sourceLabel}: ${items.length} prompts ready.`);
+      }
+
+      function renderDayOptions() {
+        els.daySelect.innerHTML = '';
+        state.items.forEach((item, index) => {
+          const option = document.createElement('option');
+          option.value = String(index);
+          option.textContent = `${item.dayOfYear}. ${item.label}`;
+          els.daySelect.appendChild(option);
+        });
+      }
+
+      function selectItem(index) {
+        state.selectedIndex = index;
+        const item = state.items[index];
+        if (!item) return;
+        els.daySelect.value = String(index);
+        els.promptText.value = item.prompt;
+        els.caption.value = item.caption;
+        renderAssets();
+      }
+
+      function getCurrentItem() {
+        const item = state.items[state.selectedIndex] || {
+          dayOfYear: 1,
+          label: 'Day 1',
+          prompt: '',
+          caption: '',
+          design: null,
+        };
+        return {
+          ...item,
+          prompt: els.promptText.value.trim(),
+          caption: els.caption.value.trim(),
+        };
+      }
+
+      function renderAssets() {
+        const item = getCurrentItem();
+        if (!item.prompt) {
+          setStatus('Add a prompt before rendering.');
+          return;
+        }
+        drawCard(els.postCanvas, item, 'post');
+        drawCard(els.storyCanvas, item, 'story');
+        setStatus(`Rendered ${item.label}.`);
+      }
+
+      function drawCard(canvas, item, format) {
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width;
+        const h = canvas.height;
+        const palette = item.design && item.design.palette ? item.design.palette : {};
+        const bg = palette.background || BRAND.cream;
+        const text = palette.text || BRAND.ink;
+        const accent = palette.accent || senseAccent(item.sense);
+        const muted = palette.muted || BRAND.ink3;
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, w, h);
+
+        drawPaperTexture(ctx, w, h, text);
+        drawGlow(ctx, w, h, accent);
+        drawEye(ctx, w / 2, format === 'story' ? 282 : 210, format === 'story' ? 178 : 138, accent, 0.16);
+
+        const margin = format === 'story' ? 118 : 104;
+        const mainY = format === 'story' ? 650 : 445;
+        const maxWidth = w - margin * 2;
+
+        ctx.fillStyle = muted;
+        ctx.font = '400 32px Nunito, sans-serif';
+        ctx.letterSpacing = '6px';
+        drawTrackingText(ctx, 'TODAY I NOTICED', margin, mainY - 112, 5);
+
+        ctx.fillStyle = text;
+        ctx.font = `italic 74px "Cormorant Garamond", serif`;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        wrapText(ctx, extractCardLine(item.prompt), margin, mainY, maxWidth, 88);
+
+        ctx.strokeStyle = accent;
+        ctx.globalAlpha = 0.42;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(margin, format === 'story' ? h - 360 : h - 258);
+        ctx.lineTo(w - margin, format === 'story' ? h - 360 : h - 258);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        ctx.fillStyle = text;
+        ctx.font = '300 34px Nunito, sans-serif';
+        wrapText(ctx, item.prompt, margin, format === 'story' ? h - 310 : h - 214, maxWidth, 48, 3);
+
+        ctx.fillStyle = muted;
+        ctx.font = '400 26px Nunito, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('noted with Nazar', margin, h - 92);
+        ctx.textAlign = 'right';
+        ctx.fillText(item.label.toLowerCase(), w - margin, h - 92);
+      }
+
+      function senseAccent(sense) {
+        const map = {
+          sight: '#085041',
+          sound: '#534AB7',
+          smell: '#BA7517',
+          taste: '#D4537E',
+          touch: '#D85A30',
+          feeling: '#1D9E75',
+        };
+        return map[sense] || BRAND.accent;
+      }
+
+      function extractCardLine(prompt) {
+        return prompt
+          .replace(/^(Notice|Give attention to|Stay with|Let yourself find|Look for|Listen for|Receive|Name|Follow|Hold)\s+/i, '')
+          .replace(/\s+(through|by listening first|as taste, memory, or appetite|with|without|and stay).*$/i, '')
+          .replace(/\.$/, '')
+          .trim() || prompt;
+      }
+
+      function drawEye(ctx, cx, cy, size, color, alpha) {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, size, size * 0.48, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(cx, cy, size * 0.18, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(cx, cy, size * 0.07, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawGlow(ctx, w, h, color) {
+        const gradient = ctx.createRadialGradient(w * 0.72, h * 0.18, 0, w * 0.72, h * 0.18, h * 0.62);
+        gradient.addColorStop(0, hexToRgba(color, 0.18));
+        gradient.addColorStop(1, hexToRgba(color, 0));
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      function drawPaperTexture(ctx, w, h, color) {
+        ctx.save();
+        ctx.globalAlpha = 0.035;
+        ctx.fillStyle = color;
+        for (let i = 0; i < 900; i++) {
+          const x = (i * 97) % w;
+          const y = (i * 193) % h;
+          ctx.fillRect(x, y, 1 + (i % 3), 1 + (i % 2));
+        }
+        ctx.restore();
+      }
+
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight, maxLines) {
+        const words = text.split(/\s+/);
+        let line = '';
+        let lines = 0;
+        for (let i = 0; i < words.length; i++) {
+          const testLine = line ? `${line} ${words[i]}` : words[i];
+          if (ctx.measureText(testLine).width > maxWidth && line) {
+            ctx.fillText(line, x, y);
+            y += lineHeight;
+            lines++;
+            line = words[i];
+            if (maxLines && lines >= maxLines) return;
+          } else {
+            line = testLine;
+          }
+        }
+        if (line && (!maxLines || lines < maxLines)) ctx.fillText(line, x, y);
+      }
+
+      function drawTrackingText(ctx, text, x, y, spacing) {
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        let cursor = x;
+        for (const char of text) {
+          ctx.fillText(char, cursor, y);
+          cursor += ctx.measureText(char).width + spacing;
+        }
+      }
+
+      function hexToRgba(hex, alpha) {
+        const raw = hex.replace('#', '');
+        const bigint = parseInt(raw.length === 3 ? raw.split('').map(c => c + c).join('') : raw, 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+
+      function downloadCanvas(canvas, filename) {
+        canvas.toBlob(blob => {
+          if (!blob) return;
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          a.click();
+          URL.revokeObjectURL(url);
+        }, 'image/png');
+      }
+
+      function downloadText(text, filename) {
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function currentSlug() {
+        const item = getCurrentItem();
+        return `nazar-day-${String(item.dayOfYear || state.selectedIndex + 1).padStart(3, '0')}`;
+      }
+
+      els.loadDefault.addEventListener('click', () => {
+        fetch(DEFAULT_CONTENT_PATH)
+          .then(res => {
+            if (!res.ok) throw new Error('Default content not found.');
+            return res.json();
+          })
+          .then(data => loadItems(data, 'Nazar 365 loaded'))
+          .catch(err => setStatus(err.message));
+      });
+
+      els.file.addEventListener('change', () => {
+        const file = els.file.files && els.file.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            loadItems(JSON.parse(String(reader.result)), file.name);
+          } catch (err) {
+            setStatus(err.message || 'Could not read that JSON file.');
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      els.daySelect.addEventListener('change', () => selectItem(Number(els.daySelect.value)));
+      els.render.addEventListener('click', renderAssets);
+      els.promptText.addEventListener('input', () => {
+        const item = state.items[state.selectedIndex];
+        if (!item) return;
+        if (!els.caption.value.trim()) els.caption.value = makeCaption(els.promptText.value.trim());
+      });
+      els.copyCaption.addEventListener('click', () => {
+        navigator.clipboard.writeText(els.caption.value).then(
+          () => setStatus('Caption copied.'),
+          () => setStatus('Copy failed. Select the caption and copy manually.'),
+        );
+      });
+      els.downloadPost.addEventListener('click', () => downloadCanvas(els.postCanvas, `${currentSlug()}-post.png`));
+      els.downloadStory.addEventListener('click', () => downloadCanvas(els.storyCanvas, `${currentSlug()}-story.png`));
+      els.downloadCaption.addEventListener('click', () => downloadText(els.caption.value, `${currentSlug()}-caption.txt`));
+
+      document.fonts.ready.then(() => els.loadDefault.click());
+    })();
+  </script>
+</body>
+</html>

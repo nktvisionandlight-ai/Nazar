@@ -874,6 +874,26 @@
       line-height: 1.6;
       padding: 4px 0 18px;
     }
+    .content-studio-link {
+      display: block;
+      width: 100%;
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: 14px;
+      padding: 15px 16px;
+      text-align: center;
+      text-decoration: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .content-studio-link:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
 
     /* ── YEAR IN NOTICING OVERLAY ── */
     #year-overlay {
@@ -1330,6 +1350,7 @@
       <div class="content-header">content engine</div>
       <p class="content-intro">365 prompts, captions, and share-card directions for growing Nazar on Instagram.</p>
       <p class="content-sub">Export one month at a time as JSON. Each month includes daily noticing prompts, ready-to-edit Instagram captions, and share-card design specs.</p>
+      <a class="content-studio-link" href="./content-studio.html">open content studio</a>
       <div class="content-summary">
         <div class="content-stat">
           <div class="content-stat-number" id="content-prompt-count">365</div>
