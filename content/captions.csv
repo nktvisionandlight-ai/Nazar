@@ -1,151 +1,151 @@
-day_of_year,date,label,sense,prompt,caption,post_file,story_file
-1,--01-01,January 1,sight,Give attention to your first sip through sight. Stay with it as if it had been waiting for you.,"Today asked me to notice: your first sip. Some days the softest detail is the one that stays.
+campaign_day,source_day_of_year,date,label,sense,prompt,caption,post_file,story_file
+1,161,--06-10,June 10,touch,Receive the texture of something old beside something new. Stay with it as if beauty can be quiet.,"Proof the ordinary is not empty: something old beside something new. Beauty did not announce itself. It was simply there.
 
-Save one small thing before the day ends.
+Try noticing one detail now.
 
-#nazar #noticing #slowdaily",posts/nazar-day-001-post.png,stories/nazar-day-001-story.png
-2,--01-02,January 2,sound,Stay with a familiar object by listening first. Stay with it before the day asks for anything else.,"I am practicing attention with: a familiar object. The day became gentler when I named one true thing.
+#nazar #quietlife #noticingpractice",posts/nazar-day-001-post.png,stories/nazar-day-001-story.png
+2,162,--06-11,June 11,feeling,Name the feeling around a sound behind you. Stay with it until it becomes specific.,"A tiny beautiful thing: a sound behind you. This is less about journaling and more about returning.
 
-Send this to someone who sees softly.
+Your turn: name one ordinary beautiful thing.
 
-#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-002-post.png,stories/nazar-day-002-story.png
-3,--01-03,January 3,smell,Let yourself find the scent around a plant or tree. Stay with it and let one detail be enough.,"This was enough for today: a plant or tree. I kept this because small things are how a life gathers meaning.
+#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-002-post.png,stories/nazar-day-002-story.png
+3,163,--06-12,June 12,sight,Follow a shadow through sight. Stay with it as a small proof that you are here.,"A small thing I almost missed: a shadow. I am learning that attention changes the size of a moment.
 
-Start with the thing closest to you.
+Let one detail be enough.
 
-#nazar #dailyjournal #presencepractice",posts/nazar-day-003-post.png,stories/nazar-day-003-story.png
-4,--01-04,January 4,taste,"Look for the space between sounds as taste, memory, or appetite. Stay with it as if it had been waiting for you.","One detail worth keeping: the space between sounds. The ordinary world keeps offering evidence.
+#nazar #noticing #slowdaily",posts/nazar-day-003-post.png,stories/nazar-day-003-story.png
+4,164,--06-13,June 13,sound,Hold a cup or glass by listening first. Stay with it as if beauty can be quiet.,"The world left this here: a cup or glass. Nothing dramatic happened. I looked anyway.
 
-Notice with me today.
+What did you notice today?
 
-#nazar #romanticizeyourlife #softliving",posts/nazar-day-004-post.png,stories/nazar-day-004-story.png
-5,--01-05,January 5,touch,Listen for the texture of your own breathing. Stay with it before the day asks for anything else.,"A note from the present tense: your own breathing. Some days the softest detail is the one that stays.
+#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-004-post.png,stories/nazar-day-004-story.png
+5,165,--06-14,June 14,smell,Notice the scent around a chair waiting quietly. Stay with it until it becomes specific.,"Not everything important is loud: a chair waiting quietly. Beauty did not announce itself. It was simply there.
 
-Save one small thing before the day ends.
+Try noticing one detail now.
 
-#nazar #quietlife #noticingpractice",posts/nazar-day-005-post.png,stories/nazar-day-005-story.png
-6,--01-06,January 6,feeling,Receive the feeling around a corner of the street. Stay with it and let one detail be enough.,"Proof the ordinary is not empty: a corner of the street. The day became gentler when I named one true thing.
+#nazar #dailyjournal #presencepractice",posts/nazar-day-005-post.png,stories/nazar-day-005-story.png
+6,166,--06-15,June 15,taste,"Give attention to a threshold as taste, memory, or appetite. Stay with it as a small proof that you are here.","A quiet receipt from the day: a threshold. This is less about journaling and more about returning.
 
-Send this to someone who sees softly.
+Your turn: name one ordinary beautiful thing.
 
-#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-006-post.png,stories/nazar-day-006-story.png
-7,--01-07,January 7,sight,Name the weight of your phone through sight. Stay with it as if it had been waiting for you.,"A tiny beautiful thing: the weight of your phone. I kept this because small things are how a life gathers meaning.
+#nazar #romanticizeyourlife #softliving",posts/nazar-day-006-post.png,stories/nazar-day-006-story.png
+7,167,--06-16,June 16,touch,Stay with the texture of a tiny imperfection. Stay with it as if beauty can be quiet.,"Today, beauty was hiding in: a tiny imperfection. I am learning that attention changes the size of a moment.
 
-Start with the thing closest to you.
+Let one detail be enough.
 
-#nazar #noticing #slowdaily",posts/nazar-day-007-post.png,stories/nazar-day-007-story.png
-8,--01-08,January 8,sound,"Follow a bird, bug, or leaf by listening first. Stay with it before the day asks for anything else.","A small thing I almost missed: a bird, bug, or leaf. The ordinary world keeps offering evidence.
+#nazar #quietlife #noticingpractice",posts/nazar-day-007-post.png,stories/nazar-day-007-story.png
+8,168,--06-17,June 17,feeling,Let yourself find the feeling around a quiet appliance. Stay with it until it becomes specific.,"Today asked me to notice: a quiet appliance. Nothing dramatic happened. I looked anyway.
 
-Notice with me today.
+What did you notice today?
 
-#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-008-post.png,stories/nazar-day-008-story.png
-9,--01-09,January 9,smell,Hold the scent around something worn smooth. Stay with it and let one detail be enough.,"The world left this here: something worn smooth. Some days the softest detail is the one that stays.
+#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-008-post.png,stories/nazar-day-008-story.png
+9,169,--06-18,June 18,sight,Look for morning light through sight. Stay with it as a small proof that you are here.,"I am practicing attention with: morning light. Beauty did not announce itself. It was simply there.
 
-Save one small thing before the day ends.
+Try noticing one detail now.
 
-#nazar #dailyjournal #presencepractice",posts/nazar-day-009-post.png,stories/nazar-day-009-story.png
-10,--01-10,January 10,taste,"Notice the edge of a table as taste, memory, or appetite. Stay with it as if it had been waiting for you.","Not everything important is loud: the edge of a table. The day became gentler when I named one true thing.
+#nazar #noticing #slowdaily",posts/nazar-day-009-post.png,stories/nazar-day-009-story.png
+10,170,--06-19,June 19,sound,Listen for your hands by listening first. Stay with it as if beauty can be quiet.,"This was enough for today: your hands. This is less about journaling and more about returning.
 
-Send this to someone who sees softly.
+Your turn: name one ordinary beautiful thing.
 
-#nazar #romanticizeyourlife #softliving",posts/nazar-day-010-post.png,stories/nazar-day-010-story.png
-11,--01-11,January 11,touch,Give attention to the texture of the floor under your feet. Stay with it before the day asks for anything else.,"A quiet receipt from the day: the floor under your feet. I kept this because small things are how a life gathers meaning.
+#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-010-post.png,stories/nazar-day-010-story.png
+11,171,--06-20,June 20,smell,Receive the scent around the walk from one room to another. Stay with it until it becomes specific.,"One detail worth keeping: the walk from one room to another. I am learning that attention changes the size of a moment.
 
-Start with the thing closest to you.
+Let one detail be enough.
 
-#nazar #quietlife #noticingpractice",posts/nazar-day-011-post.png,stories/nazar-day-011-story.png
-12,--01-12,January 12,feeling,Stay with the feeling around the way fabric falls. Stay with it and let one detail be enough.,"Today, beauty was hiding in: the way fabric falls. The ordinary world keeps offering evidence.
+#nazar #dailyjournal #presencepractice",posts/nazar-day-011-post.png,stories/nazar-day-011-story.png
+12,172,--06-21,June 21,taste,"Name the last thing you touched as taste, memory, or appetite. Stay with it as a small proof that you are here.","A note from the present tense: the last thing you touched. Nothing dramatic happened. I looked anyway.
 
-Notice with me today.
+What did you notice today?
 
-#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-012-post.png,stories/nazar-day-012-story.png
-13,--01-13,January 13,sight,Let yourself find something cool through sight. Stay with it as if it had been waiting for you.,"Today asked me to notice: something cool. Some days the softest detail is the one that stays.
+#nazar #romanticizeyourlife #softliving",posts/nazar-day-012-post.png,stories/nazar-day-012-story.png
+13,173,--06-22,June 22,touch,Follow the texture of a handle or knob. Stay with it as if beauty can be quiet.,"Proof the ordinary is not empty: a handle or knob. Beauty did not announce itself. It was simply there.
 
-Save one small thing before the day ends.
+Try noticing one detail now.
 
-#nazar #noticing #slowdaily",posts/nazar-day-013-post.png,stories/nazar-day-013-story.png
-14,--01-14,January 14,sound,Look for a pause in conversation by listening first. Stay with it before the day asks for anything else.,"I am practicing attention with: a pause in conversation. The day became gentler when I named one true thing.
+#nazar #quietlife #noticingpractice",posts/nazar-day-013-post.png,stories/nazar-day-013-story.png
+14,174,--06-23,June 23,feeling,Hold the feeling around the sound of traffic or weather. Stay with it until it becomes specific.,"A tiny beautiful thing: the sound of traffic or weather. This is less about journaling and more about returning.
 
-Send this to someone who sees softly.
+Your turn: name one ordinary beautiful thing.
 
-#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-014-post.png,stories/nazar-day-014-story.png
-15,--01-15,January 15,smell,"Listen for the scent around a spoon, key, or coin. Stay with it and let one detail be enough.","This was enough for today: a spoon, key, or coin. I kept this because small things are how a life gathers meaning.
+#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-014-post.png,stories/nazar-day-014-story.png
+15,175,--06-24,June 24,sight,Notice a scent from another room through sight. Stay with it as a small proof that you are here.,"A small thing I almost missed: a scent from another room. I am learning that attention changes the size of a moment.
 
-Start with the thing closest to you.
+Let one detail be enough.
 
-#nazar #dailyjournal #presencepractice",posts/nazar-day-015-post.png,stories/nazar-day-015-story.png
-16,--01-16,January 16,taste,"Receive your first sip as taste, memory, or appetite. Stay with it as if it had been waiting for you.","One detail worth keeping: your first sip. The ordinary world keeps offering evidence.
+#nazar #noticing #slowdaily",posts/nazar-day-015-post.png,stories/nazar-day-015-story.png
+16,176,--06-25,June 25,sound,Give attention to something old beside something new by listening first. Stay with it as if beauty can be quiet.,"The world left this here: something old beside something new. Nothing dramatic happened. I looked anyway.
 
-Notice with me today.
+What did you notice today?
 
-#nazar #romanticizeyourlife #softliving",posts/nazar-day-016-post.png,stories/nazar-day-016-story.png
-17,--01-17,January 17,touch,Name the texture of a familiar object. Stay with it before the day asks for anything else.,"A note from the present tense: a familiar object. Some days the softest detail is the one that stays.
+#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-016-post.png,stories/nazar-day-016-story.png
+17,177,--06-26,June 26,smell,Stay with the scent around a sound behind you. Stay with it until it becomes specific.,"Not everything important is loud: a sound behind you. Beauty did not announce itself. It was simply there.
 
-Save one small thing before the day ends.
+Try noticing one detail now.
 
-#nazar #quietlife #noticingpractice",posts/nazar-day-017-post.png,stories/nazar-day-017-story.png
-18,--01-18,January 18,feeling,Follow the feeling around a plant or tree. Stay with it and let one detail be enough.,"Proof the ordinary is not empty: a plant or tree. The day became gentler when I named one true thing.
+#nazar #dailyjournal #presencepractice",posts/nazar-day-017-post.png,stories/nazar-day-017-story.png
+18,178,--06-27,June 27,taste,"Let yourself find a shadow as taste, memory, or appetite. Stay with it as a small proof that you are here.","A quiet receipt from the day: a shadow. This is less about journaling and more about returning.
 
-Send this to someone who sees softly.
+Your turn: name one ordinary beautiful thing.
 
-#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-018-post.png,stories/nazar-day-018-story.png
-19,--01-19,January 19,sight,Hold the space between sounds through sight. Stay with it as if it had been waiting for you.,"A tiny beautiful thing: the space between sounds. I kept this because small things are how a life gathers meaning.
+#nazar #romanticizeyourlife #softliving",posts/nazar-day-018-post.png,stories/nazar-day-018-story.png
+19,179,--06-28,June 28,touch,Look for the texture of a cup or glass. Stay with it as if beauty can be quiet.,"Today, beauty was hiding in: a cup or glass. I am learning that attention changes the size of a moment.
 
-Start with the thing closest to you.
+Let one detail be enough.
 
-#nazar #noticing #slowdaily",posts/nazar-day-019-post.png,stories/nazar-day-019-story.png
-20,--01-20,January 20,sound,Notice your own breathing by listening first. Stay with it before the day asks for anything else.,"A small thing I almost missed: your own breathing. The ordinary world keeps offering evidence.
+#nazar #quietlife #noticingpractice",posts/nazar-day-019-post.png,stories/nazar-day-019-story.png
+20,180,--06-29,June 29,feeling,Listen for the feeling around a chair waiting quietly. Stay with it until it becomes specific.,"Today asked me to notice: a chair waiting quietly. Nothing dramatic happened. I looked anyway.
 
-Notice with me today.
+What did you notice today?
 
-#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-020-post.png,stories/nazar-day-020-story.png
-21,--01-21,January 21,smell,Give attention to the scent around a corner of the street. Stay with it and let one detail be enough.,"The world left this here: a corner of the street. Some days the softest detail is the one that stays.
+#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-020-post.png,stories/nazar-day-020-story.png
+21,181,--06-30,June 30,sight,Receive a threshold through sight. Stay with it as a small proof that you are here.,"I am practicing attention with: a threshold. Beauty did not announce itself. It was simply there.
 
-Save one small thing before the day ends.
+Try noticing one detail now.
 
-#nazar #dailyjournal #presencepractice",posts/nazar-day-021-post.png,stories/nazar-day-021-story.png
-22,--01-22,January 22,taste,"Stay with the weight of your phone as taste, memory, or appetite. Stay with it as if it had been waiting for you.","Not everything important is loud: the weight of your phone. The day became gentler when I named one true thing.
+#nazar #noticing #slowdaily",posts/nazar-day-021-post.png,stories/nazar-day-021-story.png
+22,182,--07-01,July 1,sound,Follow a small reflection by listening first. Stay with it with no need to make it useful.,"A small thing I almost missed: a small reflection. Nothing dramatic happened. I looked anyway.
 
-Send this to someone who sees softly.
+Let one detail be enough.
 
-#nazar #romanticizeyourlife #softliving",posts/nazar-day-022-post.png,stories/nazar-day-022-story.png
-23,--01-23,January 23,touch,"Let yourself find the texture of a bird, bug, or leaf. Stay with it before the day asks for anything else.","A quiet receipt from the day: a bird, bug, or leaf. I kept this because small things are how a life gathers meaning.
+#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-022-post.png,stories/nazar-day-022-story.png
+23,183,--07-02,July 2,smell,Hold the scent around a scent that arrives suddenly. Stay with it without turning away too quickly.,"The world left this here: a scent that arrives suddenly. Beauty did not announce itself. It was simply there.
 
-Start with the thing closest to you.
+What did you notice today?
 
-#nazar #quietlife #noticingpractice",posts/nazar-day-023-post.png,stories/nazar-day-023-story.png
-24,--01-24,January 24,feeling,Look for the feeling around something worn smooth. Stay with it and let one detail be enough.,"Today, beauty was hiding in: something worn smooth. The ordinary world keeps offering evidence.
+#nazar #dailyjournal #presencepractice",posts/nazar-day-023-post.png,stories/nazar-day-023-story.png
+24,184,--07-03,July 3,taste,"Notice water in any form as taste, memory, or appetite. Stay with it without improving it.","Not everything important is loud: water in any form. This is less about journaling and more about returning.
 
-Notice with me today.
+Try noticing one detail now.
 
-#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-024-post.png,stories/nazar-day-024-story.png
-25,--01-25,January 25,sight,Listen for the edge of a table through sight. Stay with it as if it had been waiting for you.,"Today asked me to notice: the edge of a table. Some days the softest detail is the one that stays.
+#nazar #romanticizeyourlife #softliving",posts/nazar-day-024-post.png,stories/nazar-day-024-story.png
+25,185,--07-04,July 4,touch,Give attention to the texture of a page or screen. Stay with it with no need to make it useful.,"A quiet receipt from the day: a page or screen. I am learning that attention changes the size of a moment.
 
-Save one small thing before the day ends.
+Your turn: name one ordinary beautiful thing.
 
-#nazar #noticing #slowdaily",posts/nazar-day-025-post.png,stories/nazar-day-025-story.png
-26,--01-26,January 26,sound,Receive the floor under your feet by listening first. Stay with it before the day asks for anything else.,"I am practicing attention with: the floor under your feet. The day became gentler when I named one true thing.
+#nazar #quietlife #noticingpractice",posts/nazar-day-025-post.png,stories/nazar-day-025-story.png
+26,186,--07-05,July 5,feeling,Stay with the feeling around a repeated shape. Stay with it without turning away too quickly.,"Today, beauty was hiding in: a repeated shape. Nothing dramatic happened. I looked anyway.
 
-Send this to someone who sees softly.
+Let one detail be enough.
 
-#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-026-post.png,stories/nazar-day-026-story.png
-27,--01-27,January 27,smell,Name the scent around the way fabric falls. Stay with it and let one detail be enough.,"This was enough for today: the way fabric falls. I kept this because small things are how a life gathers meaning.
+#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-026-post.png,stories/nazar-day-026-story.png
+27,187,--07-06,July 6,sight,Let yourself find a fold in paper through sight. Stay with it without improving it.,"Today asked me to notice: a fold in paper. Beauty did not announce itself. It was simply there.
 
-Start with the thing closest to you.
+What did you notice today?
 
-#nazar #dailyjournal #presencepractice",posts/nazar-day-027-post.png,stories/nazar-day-027-story.png
-28,--01-28,January 28,taste,"Follow something cool as taste, memory, or appetite. Stay with it as if it had been waiting for you.","One detail worth keeping: something cool. The ordinary world keeps offering evidence.
+#nazar #noticing #slowdaily",posts/nazar-day-027-post.png,stories/nazar-day-027-story.png
+28,188,--07-07,July 7,sound,Look for the nearest window by listening first. Stay with it with no need to make it useful.,"I am practicing attention with: the nearest window. This is less about journaling and more about returning.
 
-Notice with me today.
+Try noticing one detail now.
 
-#nazar #romanticizeyourlife #softliving",posts/nazar-day-028-post.png,stories/nazar-day-028-story.png
-29,--01-29,January 29,touch,Hold the texture of a pause in conversation. Stay with it before the day asks for anything else.,"A note from the present tense: a pause in conversation. Some days the softest detail is the one that stays.
+#nazar #mindfulmoments #ordinarybeauty",posts/nazar-day-028-post.png,stories/nazar-day-028-story.png
+29,189,--07-08,July 8,smell,Listen for the scent around the temperature of the room. Stay with it without turning away too quickly.,"This was enough for today: the temperature of the room. I am learning that attention changes the size of a moment.
 
-Save one small thing before the day ends.
+Your turn: name one ordinary beautiful thing.
 
-#nazar #quietlife #noticingpractice",posts/nazar-day-029-post.png,stories/nazar-day-029-story.png
-30,--01-30,January 30,feeling,"Notice the feeling around a spoon, key, or coin. Stay with it and let one detail be enough.","Proof the ordinary is not empty: a spoon, key, or coin. The day became gentler when I named one true thing.
+#nazar #dailyjournal #presencepractice",posts/nazar-day-029-post.png,stories/nazar-day-029-story.png
+30,190,--07-09,July 9,taste,"Receive the air outside as taste, memory, or appetite. Stay with it without improving it.","One detail worth keeping: the air outside. Nothing dramatic happened. I looked anyway.
 
-Send this to someone who sees softly.
+Let one detail be enough.
 
-#nazar #mindfuljournal #smallbeautifulthings",posts/nazar-day-030-post.png,stories/nazar-day-030-story.png
+#nazar #romanticizeyourlife #softliving",posts/nazar-day-030-post.png,stories/nazar-day-030-story.png

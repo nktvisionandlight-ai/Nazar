@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the first 30 Nazar Instagram post/story assets from content JSON."""
+"""Generate 30 Nazar Instagram post/story assets starting on June 10."""
 
 from __future__ import annotations
 
@@ -19,6 +19,9 @@ POSTS = ROOT / "content/posts"
 STORIES = ROOT / "content/stories"
 CAPTIONS = ROOT / "content/captions.csv"
 CHROME = "/usr/local/bin/google-chrome"
+START_MONTH = 6
+START_DAY = 10
+ASSET_COUNT = 30
 
 SENSE_COLORS = {
     "sight": "#085041",
@@ -220,6 +223,7 @@ def render(page_html: str, output_path: Path, width: int, height: int, temp_dir:
     source = temp_dir / f"{output_path.stem}.html"
     profile = temp_dir / f"{output_path.stem}-chrome"
     source.write_text(page_html)
+    output_path.unlink(missing_ok=True)
     proc = subprocess.Popen(
         [
             CHROME,
@@ -264,21 +268,27 @@ def main() -> None:
     POSTS.mkdir(parents=True, exist_ok=True)
     STORIES.mkdir(parents=True, exist_ok=True)
     engine = json.loads(SOURCE.read_text())
-    items = engine["items"][:30]
+    all_items = engine["items"]
+    start_index = next(
+        index
+        for index, item in enumerate(all_items)
+        if item["month"] == START_MONTH and item["dayOfMonth"] == START_DAY
+    )
+    items = all_items[start_index : start_index + ASSET_COUNT]
     rows = []
 
     with tempfile.TemporaryDirectory(prefix="nazar-render-") as temp:
         temp_dir = Path(temp)
-        for item in items:
-            day = int(item["dayOfYear"])
-            stem = f"nazar-day-{day:03d}"
+        for index, item in enumerate(items, start=1):
+            stem = f"nazar-day-{index:03d}"
             post_path = POSTS / f"{stem}-post.png"
             story_path = STORIES / f"{stem}-story.png"
             render(page(item, "post"), post_path, 1080, 1350, temp_dir)
             render(page(item, "story"), story_path, 1080, 1920, temp_dir)
             rows.append(
                 {
-                    "day_of_year": day,
+                    "campaign_day": index,
+                    "source_day_of_year": int(item["dayOfYear"]),
                     "date": item["date"],
                     "label": f"{item['monthName']} {item['dayOfMonth']}",
                     "sense": item.get("sense", ""),
@@ -293,7 +303,8 @@ def main() -> None:
         writer = csv.DictWriter(
             output,
             fieldnames=[
-                "day_of_year",
+                "campaign_day",
+                "source_day_of_year",
                 "date",
                 "label",
                 "sense",
