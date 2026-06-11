@@ -3,6 +3,8 @@ const CACHE = 'nazar-v1';
 const PRECACHE = [
   './',
   './index.html',
+  './content-studio.html',
+  './content/nazar-content-engine.json',
 ];
 
 self.addEventListener('install', e => {

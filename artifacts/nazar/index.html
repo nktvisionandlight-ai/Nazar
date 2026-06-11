@@ -13,7 +13,7 @@
   <meta name="theme-color" content="#1C1814" media="(prefers-color-scheme: dark)" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-  <link rel="apple-touch-icon" href="./icon-192.png" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400&family=Cormorant+Garant:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet">
@@ -780,6 +780,121 @@
       font-size: 14px;
     }
 
+    /* ── CONTENT ENGINE SCREEN ── */
+    .content-header {
+      font-size: 11px;
+      color: var(--ink3);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 12px 0 14px;
+    }
+    .content-intro {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 18px;
+      line-height: 1.55;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .content-sub {
+      font-size: 12px;
+      color: var(--ink3);
+      line-height: 1.6;
+      letter-spacing: 0.03em;
+      margin-bottom: 24px;
+    }
+    .content-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .content-stat {
+      background: rgba(28,26,23,0.04);
+      border: 1px solid rgba(28,26,23,0.07);
+      border-radius: 14px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+    .content-stat-number {
+      font-family: 'Cormorant Garant', serif;
+      font-size: 24px;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .content-stat-label {
+      font-size: 9px;
+      color: var(--ink3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .month-export-btn {
+      background: rgba(28,26,23,0.04);
+      border: 1px solid rgba(28,26,23,0.1);
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align: left;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      color: var(--ink);
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+    }
+    .month-export-btn:hover {
+      border-color: rgba(28,26,23,0.22);
+      background: rgba(28,26,23,0.06);
+      transform: translateY(-1px);
+    }
+    .month-export-name {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      margin-bottom: 3px;
+    }
+    .month-export-count {
+      display: block;
+      font-size: 10px;
+      color: var(--ink3);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .content-status {
+      min-height: 28px;
+      font-family: 'Cormorant Garant', serif;
+      font-size: 13px;
+      font-style: italic;
+      color: var(--ink3);
+      text-align: center;
+      line-height: 1.6;
+      padding: 4px 0 18px;
+    }
+    .content-studio-link {
+      display: block;
+      width: 100%;
+      background: var(--ink);
+      color: var(--cream);
+      border-radius: 14px;
+      padding: 15px 16px;
+      text-align: center;
+      text-decoration: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .content-studio-link:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
     /* ── YEAR IN NOTICING OVERLAY ── */
     #year-overlay {
       position: fixed;
@@ -1230,6 +1345,30 @@
       <div class="archive-grid" id="archive-grid"></div>
     </div>
 
+    <!-- CONTENT ENGINE -->
+    <div class="screen" id="screen-content">
+      <div class="content-header">content engine</div>
+      <p class="content-intro">365 prompts, captions, and share-card directions for growing Nazar on Instagram.</p>
+      <p class="content-sub">Export one month at a time as JSON. Each month includes daily noticing prompts, ready-to-edit Instagram captions, and share-card design specs.</p>
+      <a class="content-studio-link" href="./content-studio.html">open content studio</a>
+      <div class="content-summary">
+        <div class="content-stat">
+          <div class="content-stat-number" id="content-prompt-count">365</div>
+          <div class="content-stat-label">prompts</div>
+        </div>
+        <div class="content-stat">
+          <div class="content-stat-number" id="content-caption-count">365</div>
+          <div class="content-stat-label">captions</div>
+        </div>
+        <div class="content-stat">
+          <div class="content-stat-number" id="content-design-count">365</div>
+          <div class="content-stat-label">designs</div>
+        </div>
+      </div>
+      <div class="month-grid" id="content-month-grid"></div>
+      <div class="content-status" id="content-status">choose a month to download.</div>
+    </div>
+
   </div>
 
   <!-- BOTTOM NAV -->
@@ -1255,6 +1394,13 @@
         <rect x="14" y="14" width="7" height="7" rx="1"/>
       </svg>
       archive
+    </button>
+    <button class="nav-btn" data-screen="content">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 5h16M4 12h16M4 19h10"/>
+        <circle cx="18" cy="19" r="2"/>
+      </svg>
+      content
     </button>
   </nav>
 
@@ -1366,6 +1512,14 @@
   let soundOn = false;
   let archiveTab = 'all';
   let yearShown = new Set(JSON.parse(localStorage.getItem('nazar_year_shown') || '[]'));
+  let contentEngine = null;
+  let contentEnginePromise = null;
+
+  const CONTENT_ENGINE_PATH = './content/nazar-content-engine.json';
+  const MONTH_NAMES = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
 
   // ── AUDIO ─────────────────────────────────────────────────────────────
   let audioCtx = null;
@@ -1507,12 +1661,13 @@
     currentScreen = screen;
     adjustSoundForScreen();
 
-    const pageTitles = { home: 'nazar', notice: 'nazar · notice', timer: 'nazar · one minute', journal: 'nazar · your noticing', archive: 'nazar · archive' };
+    const pageTitles = { home: 'nazar', notice: 'nazar · notice', timer: 'nazar · one minute', journal: 'nazar · your noticing', archive: 'nazar · archive', content: 'nazar · content engine' };
     document.title = pageTitles[screen] || 'nazar';
 
     if (screen === 'notice') renderNotice();
     if (screen === 'journal') renderJournal();
     if (screen === 'archive') renderArchive();
+    if (screen === 'content') renderContentEngine();
   }
 
   // ── NOTICE SCREEN ─────────────────────────────────────────────────────
@@ -1923,6 +2078,98 @@ ${rows}
     hideExportOverlay();
   }
 
+  // ── CONTENT ENGINE EXPORT ─────────────────────────────────────────────
+  function setContentStatus(message) {
+    const el = document.getElementById('content-status');
+    if (el) el.textContent = message;
+  }
+
+  function renderContentEngine() {
+    renderContentMonthButtons();
+    loadContentEngine()
+      .then(engine => {
+        document.getElementById('content-prompt-count').textContent = engine.counts.noticingPrompts;
+        document.getElementById('content-caption-count').textContent = engine.counts.instagramCaptions;
+        document.getElementById('content-design-count').textContent = engine.counts.shareCardDesigns;
+        setContentStatus('choose a month to download.');
+      })
+      .catch(() => {
+        setContentStatus('content engine could not be loaded. try again after refreshing.');
+      });
+  }
+
+  function renderContentMonthButtons() {
+    const grid = document.getElementById('content-month-grid');
+    if (!grid || grid.children.length > 0) return;
+    MONTH_NAMES.forEach((name, idx) => {
+      const month = idx + 1;
+      const days = new Date(2026, month, 0).getDate();
+      const btn = document.createElement('button');
+      btn.className = 'month-export-btn';
+      btn.dataset.month = String(month);
+      btn.innerHTML = `
+        <span class="month-export-name">${name}</span>
+        <span class="month-export-count">${days} content days</span>
+      `;
+      btn.addEventListener('click', () => exportContentMonth(month));
+      grid.appendChild(btn);
+    });
+  }
+
+  function loadContentEngine() {
+    if (contentEngine) return Promise.resolve(contentEngine);
+    if (!contentEnginePromise) {
+      contentEnginePromise = fetch(CONTENT_ENGINE_PATH)
+        .then(res => {
+          if (!res.ok) throw new Error('Content engine not found');
+          return res.json();
+        })
+        .then(data => {
+          contentEngine = data;
+          return contentEngine;
+        });
+    }
+    return contentEnginePromise;
+  }
+
+  function exportContentMonth(month) {
+    setContentStatus('preparing the month...');
+    loadContentEngine()
+      .then(engine => {
+        const monthItems = engine.items.filter(item => item.month === month);
+        const monthName = MONTH_NAMES[month - 1];
+        const payload = {
+          product: engine.product,
+          version: engine.version,
+          exportType: 'monthly-content-engine',
+          month,
+          monthName,
+          counts: {
+            days: monthItems.length,
+            noticingPrompts: monthItems.length,
+            instagramCaptions: monthItems.length,
+            shareCardDesigns: monthItems.length,
+          },
+          items: monthItems,
+        };
+        downloadJson(payload, `nazar-content-${monthName.toLowerCase()}.json`);
+        setContentStatus(`${monthName} exported: ${monthItems.length} prompts, captions, and designs.`);
+      })
+      .catch(() => {
+        setContentStatus('export failed. refresh and try once more.');
+      });
+  }
+
+  function downloadJson(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   // ── UTILITIES ─────────────────────────────────────────────────────────
   function escHtml(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -2130,7 +2377,7 @@ ${rows}
   });
 
   // ── SWIPE NAVIGATION ──────────────────────────────────────────────────
-  const SWIPEABLE = ['notice', 'journal', 'archive'];
+  const SWIPEABLE = ['notice', 'journal', 'archive', 'content'];
   let swipeX = 0, swipeY = 0;
   document.addEventListener('touchstart', e => {
     swipeX = e.touches[0].clientX;
@@ -2160,6 +2407,7 @@ ${rows}
   document.addEventListener('click', unlockAudio, { once: true });
 
   updateSoundUI();
+  renderContentMonthButtons();
 
   // ── SPLASH ────────────────────────────────────────────────────────────
   setTimeout(() => {

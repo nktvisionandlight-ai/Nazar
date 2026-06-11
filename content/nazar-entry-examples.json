@@ -1,0 +1,188 @@
+{
+  "version": "1.0.0",
+  "product": "Nazar",
+  "purpose": "Entry-led social examples that feel like real Nazar observations rather than prompts.",
+  "startDate": "June 10",
+  "items": [
+    {
+      "campaignDay": 1,
+      "date": "--06-10",
+      "label": "June 10",
+      "sense": "sight",
+      "entry": "The little oval of sunlight on the kitchen floor was exactly the size of my hand. I put my palm inside it before making coffee.",
+      "caption": "A small thing I almost missed: a hand-sized patch of kitchen sunlight before coffee.\n\nNazar is a daily ritual for saving the ordinary things that make a day feel lived.\n\nWhat small thing did you notice today?\n\n#nazar #ordinarybeauty #noticingpractice",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#F7F1E7",
+          "text": "#252018",
+          "muted": "#9C9183",
+          "accent": "#B98243"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "morning paper grain"
+      }
+    },
+    {
+      "campaignDay": 2,
+      "date": "--06-11",
+      "label": "June 11",
+      "sense": "sound",
+      "entry": "My mother left a voice note and laughed at the end because she forgot what she was saying. I played just that laugh twice.",
+      "caption": "Today I kept the end of a voice note: my mother laughing because she forgot her own sentence.\n\nThe smallest sounds can hold the most life.\n\nSave this as a reminder to notice someone you love.\n\n#nazar #softliving #dailyjournal",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#EEF0F5",
+          "text": "#22283A",
+          "muted": "#8A90A3",
+          "accent": "#534AB7"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "blue hour grain"
+      }
+    },
+    {
+      "campaignDay": 3,
+      "date": "--06-12",
+      "label": "June 12",
+      "sense": "touch",
+      "entry": "The laundry was still warm when I folded it. For a second the whole room felt like someone had been kind to me.",
+      "caption": "A real observation from an ordinary day: warm laundry, folded slowly, feeling almost like care.\n\nThis is the kind of thing Nazar is for.\n\nSend this to someone who notices softly.\n\n#nazar #quietlife #smallbeautifulthings",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#F3E6DC",
+          "text": "#33251D",
+          "muted": "#A47D6A",
+          "accent": "#D85A30"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "linen warmth"
+      }
+    },
+    {
+      "campaignDay": 4,
+      "date": "--06-13",
+      "label": "June 13",
+      "sense": "smell",
+      "entry": "Someone downstairs was frying onions at 8:40pm. The hallway smelled like a family I do not know having dinner together.",
+      "caption": "The hallway smelled like onions and someone else's dinner.\n\nNot every beautiful thing belongs to us. Some things just pass through and make the evening warmer.\n\nWhat did your day smell like?\n\n#nazar #mindfulmoments #ordinarybeauty",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#F5EBD9",
+          "text": "#33281C",
+          "muted": "#A88C65",
+          "accent": "#BA7517"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "honey linen"
+      }
+    },
+    {
+      "campaignDay": 5,
+      "date": "--06-14",
+      "label": "June 14",
+      "sense": "feeling",
+      "entry": "I saw an older man pause before crossing the street to fix the collar of the woman beside him. She did not look surprised.",
+      "caption": "A two-second love story at the crosswalk: he fixed her collar, and she did not look surprised.\n\nSome observations feel worth keeping because they prove tenderness still happens in public.\n\nSave one small proof today.\n\n#nazar #romanticizeyourlife #presencepractice",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#E9F0EA",
+          "text": "#1F3028",
+          "muted": "#789184",
+          "accent": "#1D9E75"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "rain green"
+      }
+    },
+    {
+      "campaignDay": 6,
+      "date": "--06-15",
+      "label": "June 15",
+      "sense": "taste",
+      "entry": "The peach was not quite ripe, but the first bite tasted like standing barefoot near a sink in summer.",
+      "caption": "The peach was too firm, but it still tasted like summer near a kitchen sink.\n\nNazar is for the details that would sound too small anywhere else.\n\nSave this if you know what I mean.\n\n#nazar #slowdaily #mindfuljournal",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#F7E8ED",
+          "text": "#35242B",
+          "muted": "#A98291",
+          "accent": "#D4537E"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "fig paper"
+      }
+    },
+    {
+      "campaignDay": 7,
+      "date": "--06-16",
+      "label": "June 16",
+      "sense": "sight",
+      "entry": "A child on the bus pressed one finger to the window and traced the raindrops down like they were choosing a path.",
+      "caption": "On the bus, a child traced raindrops down the window like each one had somewhere important to go.\n\nA tiny scene. A whole mood.\n\nShare this with someone who would have noticed it too.\n\n#nazar #noticing #softlife",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#E9EDF4",
+          "text": "#252A3A",
+          "muted": "#8B90A0",
+          "accent": "#6E7FA8"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "rain on glass"
+      }
+    },
+    {
+      "campaignDay": 8,
+      "date": "--06-17",
+      "label": "June 17",
+      "sense": "sound",
+      "entry": "The elevator made its tired little sigh before the doors opened. Everyone inside looked up at the same time.",
+      "caption": "The elevator sighed and four strangers looked up together.\n\nThe city is full of tiny synchronized moments no one names.\n\nThat is what Nazar helps you keep.\n\n#nazar #citynoticing #ordinarybeauty",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#EFECE5",
+          "text": "#27231E",
+          "muted": "#918A80",
+          "accent": "#6F675C"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "concrete hush"
+      }
+    },
+    {
+      "campaignDay": 9,
+      "date": "--06-18",
+      "label": "June 18",
+      "sense": "touch",
+      "entry": "I found a movie ticket in my jacket pocket from a night I thought I had forgotten. The paper had gone soft at the fold.",
+      "caption": "A movie ticket in an old jacket pocket. Soft at the fold. Still carrying a night I thought I had forgotten.\n\nSome memories come back as texture first.\n\nSave this for later.\n\n#nazar #memorykeeping #dailyritual",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#F1EAE1",
+          "text": "#2F2923",
+          "muted": "#9E9185",
+          "accent": "#8F6A4A"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "aged ticket paper"
+      }
+    },
+    {
+      "campaignDay": 10,
+      "date": "--06-19",
+      "label": "June 19",
+      "sense": "feeling",
+      "entry": "At 6:12 the whole apartment turned gold, including the pile of dishes. For once, even the undone things looked forgiven.",
+      "caption": "Golden hour touched the dishes and made even the undone things look forgiven.\n\nA small mercy from the light.\n\nWhat did the light forgive in your room today?\n\n#nazar #goldenhour #noticingpractice",
+      "shareCardDesign": {
+        "palette": {
+          "background": "#F6EEDC",
+          "text": "#302719",
+          "muted": "#A18B63",
+          "accent": "#C28A2C"
+        },
+        "layout": "app-entry-screenshot",
+        "texture": "gold wash"
+      }
+    }
+  ]
+}
